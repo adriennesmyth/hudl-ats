@@ -72,29 +72,28 @@ export function useCandidates() {
 
     if (insertErr) throw insertErr
 
-    // Log initial stage history
+    // Log initial stage in pipeline history
     if (firstStage) {
-      await supabase.from('stage_history').insert({
+      await supabase.from('candidate_stages').insert({
         candidate_id: data.id,
         stage_id: firstStage.id,
-        stage_name: firstStage.name,
       })
     }
 
     return data
   }, [])
 
-  const updateCandidateStage = useCallback(async (candidateId, stageId, stageName) => {
+  const updateCandidateStage = useCallback(async (candidateId, stageId, movedBy = null) => {
     const { error: updateErr } = await supabase
       .from('candidates')
       .update({ current_stage_id: stageId, updated_at: new Date().toISOString() })
       .eq('id', candidateId)
     if (updateErr) throw updateErr
 
-    await supabase.from('stage_history').insert({
+    await supabase.from('candidate_stages').insert({
       candidate_id: candidateId,
       stage_id: stageId,
-      stage_name: stageName,
+      moved_by: movedBy,
     })
   }, [])
 

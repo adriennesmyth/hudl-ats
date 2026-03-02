@@ -9,7 +9,7 @@ export function useScorecards() {
     setLoading(true)
     const { data, error } = await supabase
       .from('scorecards')
-      .select('*, stage:stage_id(name, color)')
+      .select('id, candidate_id, stage_id, interviewer_name, overall_rating, strengths, concerns, recommendation, created_at, stage:stage_id(name, color)')
       .eq('candidate_id', candidateId)
       .order('created_at', { ascending: false })
     if (!error) setScorecards(data ?? [])
@@ -19,7 +19,15 @@ export function useScorecards() {
   const createScorecard = useCallback(async (scorecardData) => {
     const { data, error } = await supabase
       .from('scorecards')
-      .insert(scorecardData)
+      .insert({
+        candidate_id: scorecardData.candidate_id,
+        stage_id: scorecardData.stage_id,
+        interviewer_name: scorecardData.interviewer_name,
+        overall_rating: scorecardData.overall_rating,
+        strengths: scorecardData.strengths ?? null,
+        concerns: scorecardData.concerns ?? null,
+        recommendation: scorecardData.recommendation,
+      })
       .select()
       .single()
     if (error) throw error

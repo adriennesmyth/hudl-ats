@@ -269,12 +269,23 @@ export function CandidateProfilePage() {
                         })}
                       </p>
                     </div>
-                    <StarRating rating={sc.rating} />
+                    <StarRating rating={sc.overall_rating} />
                   </div>
-                  {sc.notes && (
-                    <p className="text-sm text-gray-600 bg-gray-50 rounded-lg px-4 py-3 leading-relaxed">
-                      {sc.notes}
-                    </p>
+                  {sc.strengths && (
+                    <div className="mt-2">
+                      <p className="text-xs font-medium text-gray-400 mb-1">Strengths</p>
+                      <p className="text-sm text-gray-600 bg-gray-50 rounded-lg px-4 py-3 leading-relaxed">
+                        {sc.strengths}
+                      </p>
+                    </div>
+                  )}
+                  {sc.concerns && (
+                    <div className="mt-2">
+                      <p className="text-xs font-medium text-gray-400 mb-1">Concerns</p>
+                      <p className="text-sm text-gray-600 bg-gray-50 rounded-lg px-4 py-3 leading-relaxed">
+                        {sc.concerns}
+                      </p>
+                    </div>
                   )}
                 </div>
               ))}
@@ -299,7 +310,10 @@ export function CandidateProfilePage() {
                       )}
                     </div>
                     <div className="flex-1">
-                      <p className="text-sm font-medium text-gray-800">{event.stage_name}</p>
+                      <p className="text-sm font-medium text-gray-800">{event.stage?.name}</p>
+                      {event.moved_by && (
+                        <p className="text-xs text-gray-400">by {event.moved_by}</p>
+                      )}
                     </div>
                     <div className="flex items-center gap-1 text-gray-400">
                       <Clock size={12} />

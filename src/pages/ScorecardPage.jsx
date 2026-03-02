@@ -67,7 +67,7 @@ export function ScorecardPage() {
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm({ defaultValues: { rating: 0 } })
+  } = useForm({ defaultValues: { overall_rating: 0 } })
 
   useEffect(() => {
     const load = async () => {
@@ -88,15 +88,14 @@ export function ScorecardPage() {
     setSubmitting(true)
     setSubmitError(null)
     try {
-      const stage = stages.find((s) => s.id === data.stage_id)
       await createScorecard({
         candidate_id: candidateId,
         stage_id: data.stage_id,
-        stage_name: stage?.name ?? '',
         interviewer_name: data.interviewer_name,
-        rating: Number(data.rating),
+        overall_rating: Number(data.overall_rating),
+        strengths: data.strengths || null,
+        concerns: data.concerns || null,
         recommendation: data.recommendation,
-        notes: data.notes || null,
       })
       setSubmitted(true)
     } catch (err) {
@@ -207,15 +206,15 @@ export function ScorecardPage() {
                 Overall Rating <span className="text-hudl-orange">*</span>
               </label>
               <Controller
-                name="rating"
+                name="overall_rating"
                 control={control}
                 rules={{ min: { value: 1, message: 'Please provide a rating' } }}
                 render={({ field }) => (
                   <StarRatingInput value={field.value} onChange={field.onChange} />
                 )}
               />
-              {errors.rating && (
-                <p className="text-xs text-red-500 mt-1">{errors.rating.message}</p>
+              {errors.overall_rating && (
+                <p className="text-xs text-red-500 mt-1">{errors.overall_rating.message}</p>
               )}
             </div>
 
@@ -255,16 +254,22 @@ export function ScorecardPage() {
 
           <div className="border-t border-gray-50" />
 
-          {/* Notes */}
-          <div className="px-6 py-4">
-            <h2 className="text-sm font-semibold text-hudl-orange uppercase tracking-wider mb-4">
+          {/* Strengths & Concerns */}
+          <div className="px-6 py-4 space-y-4">
+            <h2 className="text-sm font-semibold text-hudl-orange uppercase tracking-wider">
               Feedback &amp; Notes
             </h2>
             <Textarea
-              label="Interview Notes"
-              placeholder="Summarise the interview, key strengths, areas for improvement, specific examples…"
-              rows={6}
-              {...register('notes')}
+              label="Strengths"
+              placeholder="What stood out positively? Key skills, experience, culture fit…"
+              rows={3}
+              {...register('strengths')}
+            />
+            <Textarea
+              label="Concerns"
+              placeholder="Any reservations, gaps, or areas to probe further…"
+              rows={3}
+              {...register('concerns')}
             />
           </div>
 

@@ -8,8 +8,8 @@ export function useStageHistory() {
   const fetchHistory = useCallback(async (candidateId) => {
     setLoading(true)
     const { data, error } = await supabase
-      .from('stage_history')
-      .select('*')
+      .from('candidate_stages')
+      .select('*, stage:stage_id(name, color)')
       .eq('candidate_id', candidateId)
       .order('moved_at', { ascending: true })
     if (!error) setHistory(data ?? [])
