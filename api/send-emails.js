@@ -35,10 +35,10 @@ function candidateEmail(candidate) {
 
         <!-- Header -->
         <tr>
-          <td style="background:#1A1A1A;padding:28px 40px;">
+          <td style="background:#232a31;padding:28px 40px;">
             <table cellpadding="0" cellspacing="0">
               <tr>
-                <td style="background:#FF6600;width:36px;height:36px;border-radius:8px;text-align:center;vertical-align:middle;">
+                <td style="background:#ff6300;width:36px;height:36px;border-radius:8px;text-align:center;vertical-align:middle;">
                   <span style="color:#ffffff;font-weight:700;font-size:16px;">H</span>
                 </td>
                 <td style="padding-left:12px;">
@@ -53,7 +53,7 @@ function candidateEmail(candidate) {
         <!-- Body -->
         <tr>
           <td style="padding:40px;">
-            <p style="margin:0 0 8px;font-size:22px;font-weight:700;color:#1A1A1A;">
+            <p style="margin:0 0 8px;font-size:22px;font-weight:700;color:#232a31;">
               Thanks for applying, ${candidate.first_name}!
             </p>
             <p style="margin:0 0 24px;font-size:15px;color:#6b7280;line-height:1.6;">
@@ -65,31 +65,31 @@ function candidateEmail(candidate) {
             <table width="100%" cellpadding="0" cellspacing="0"
               style="background:#fff7f0;border:1px solid #fed7aa;border-radius:12px;margin-bottom:24px;">
               <tr><td style="padding:20px 24px;">
-                <p style="margin:0 0 12px;font-size:11px;font-weight:600;color:#FF6600;text-transform:uppercase;letter-spacing:0.05em;">
+                <p style="margin:0 0 12px;font-size:11px;font-weight:600;color:#ff6300;text-transform:uppercase;letter-spacing:0.05em;">
                   Application Summary
                 </p>
                 <table cellpadding="0" cellspacing="0" width="100%">
                   <tr>
                     <td style="padding:4px 0;font-size:13px;color:#6b7280;width:40%;">Name</td>
-                    <td style="padding:4px 0;font-size:13px;color:#1A1A1A;font-weight:500;">
+                    <td style="padding:4px 0;font-size:13px;color:#232a31;font-weight:500;">
                       ${candidate.first_name} ${candidate.surname}
                     </td>
                   </tr>
                   <tr>
                     <td style="padding:4px 0;font-size:13px;color:#6b7280;">Email</td>
-                    <td style="padding:4px 0;font-size:13px;color:#1A1A1A;font-weight:500;">${candidate.email}</td>
+                    <td style="padding:4px 0;font-size:13px;color:#232a31;font-weight:500;">${candidate.email}</td>
                   </tr>
                   ${candidate.education_level ? `
                   <tr>
                     <td style="padding:4px 0;font-size:13px;color:#6b7280;">Education</td>
-                    <td style="padding:4px 0;font-size:13px;color:#1A1A1A;font-weight:500;">${candidate.education_level}</td>
+                    <td style="padding:4px 0;font-size:13px;color:#232a31;font-weight:500;">${candidate.education_level}</td>
                   </tr>` : ''}
                 </table>
               </td></tr>
             </table>
 
             <p style="margin:0 0 6px;font-size:14px;color:#6b7280;line-height:1.6;">
-              <strong style="color:#1A1A1A;">What happens next?</strong><br>
+              <strong style="color:#232a31;">What happens next?</strong><br>
               Our team typically reviews applications within 5 business days.
               If we'd like to move forward, you'll hear from us to schedule a call.
             </p>
@@ -131,10 +131,10 @@ function recruiterEmail(candidate) {
 
         <!-- Header -->
         <tr>
-          <td style="background:#1A1A1A;padding:28px 40px;">
+          <td style="background:#232a31;padding:28px 40px;">
             <table cellpadding="0" cellspacing="0">
               <tr>
-                <td style="background:#FF6600;width:36px;height:36px;border-radius:8px;text-align:center;vertical-align:middle;">
+                <td style="background:#ff6300;width:36px;height:36px;border-radius:8px;text-align:center;vertical-align:middle;">
                   <span style="color:#ffffff;font-weight:700;font-size:16px;">H</span>
                 </td>
                 <td style="padding-left:12px;">
@@ -149,7 +149,7 @@ function recruiterEmail(candidate) {
         <!-- Body -->
         <tr>
           <td style="padding:40px;">
-            <p style="margin:0 0 4px;font-size:22px;font-weight:700;color:#1A1A1A;">New application received</p>
+            <p style="margin:0 0 4px;font-size:22px;font-weight:700;color:#232a31;">New application received</p>
             <p style="margin:0 0 28px;font-size:15px;color:#6b7280;">
               ${candidate.first_name} ${candidate.surname} just submitted an application.
             </p>
@@ -158,7 +158,7 @@ function recruiterEmail(candidate) {
             <table width="100%" cellpadding="0" cellspacing="0"
               style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;margin-bottom:28px;">
               <tr><td style="padding:20px 24px;">
-                <p style="margin:0 0 14px;font-size:11px;font-weight:600;color:#FF6600;text-transform:uppercase;letter-spacing:0.05em;">
+                <p style="margin:0 0 14px;font-size:11px;font-weight:600;color:#ff6300;text-transform:uppercase;letter-spacing:0.05em;">
                   Candidate Details
                 </p>
                 <table cellpadding="0" cellspacing="0" width="100%">
@@ -169,13 +169,13 @@ function recruiterEmail(candidate) {
                     ['Address', candidate.address],
                     ['Referred By', candidate.referred_by],
                     ['LinkedIn', candidate.linkedin_url],
-                    ['CV', candidate.cv_url ? '<a href="' + candidate.cv_url + '" style="color:#FF6600;">Download CV</a>' : null],
+                    ['CV', candidate.cv_url ? '<a href="' + candidate.cv_url + '" style="color:#ff6300;">Download CV</a>' : null],
                   ]
                     .filter(([, v]) => v)
                     .map(([label, value]) => `
                   <tr>
                     <td style="padding:5px 0;font-size:13px;color:#6b7280;width:30%;vertical-align:top;">${label}</td>
-                    <td style="padding:5px 0;font-size:13px;color:#1A1A1A;font-weight:500;">${value}</td>
+                    <td style="padding:5px 0;font-size:13px;color:#232a31;font-weight:500;">${value}</td>
                   </tr>`).join('')}
                 </table>
               </td></tr>
@@ -184,7 +184,7 @@ function recruiterEmail(candidate) {
             <!-- CTA -->
             <table cellpadding="0" cellspacing="0">
               <tr>
-                <td style="background:#FF6600;border-radius:10px;">
+                <td style="background:#ff6300;border-radius:10px;">
                   <a href="${profileUrl}"
                     style="display:inline-block;padding:12px 28px;color:#ffffff;font-weight:600;font-size:14px;text-decoration:none;">
                     View Candidate Profile →
@@ -227,15 +227,8 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Missing candidate data' })
   }
 
-  const results = { candidate: null, recruiter: null }
+  const results = { recruiter: null }
   const errors = []
-
-  // Send candidate confirmation
-  try {
-    results.candidate = await sendEmail(candidateEmail(candidate))
-  } catch (err) {
-    errors.push(`Candidate email: ${err.message}`)
-  }
 
   // Send recruiter notification
   if (RECRUITER_EMAIL) {

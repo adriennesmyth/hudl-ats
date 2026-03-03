@@ -5,10 +5,10 @@ export default {
     extend: {
       colors: {
         hudl: {
-          orange: '#FF6600',
-          'orange-hover': '#E55A00',
-          'orange-light': '#FFF3EC',
-          dark: '#1A1A1A',
+          orange: '#ff6300',
+          'orange-hover': '#ff6e00',
+          'orange-light': '#fff4ee',
+          dark: '#232a31',
         },
       },
     },
