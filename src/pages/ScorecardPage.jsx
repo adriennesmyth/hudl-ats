@@ -133,7 +133,7 @@ export function ScorecardPage() {
         scorecard_type: scorecardType,
         stage_id: scorecardType === 'interview' ? data.stage_id : null,
         interviewer_name: data.interviewer_name,
-        overall_rating: scorecardType === 'interview' ? Number(data.overall_rating) : 0,
+        overall_rating: scorecardType === 'interview' ? Number(data.overall_rating) : null,
         strengths: scorecardType === 'interview' ? (data.strengths || null) : null,
         concerns: scorecardType === 'interview' ? (data.concerns || null) : (data.notes || null),
         recommendation: data.recommendation,

@@ -24,7 +24,7 @@ export function useScorecards() {
         scorecard_type: scorecardData.scorecard_type ?? 'interview',
         stage_id: scorecardData.stage_id ?? null,
         interviewer_name: scorecardData.interviewer_name,
-        overall_rating: scorecardData.overall_rating ?? 0,
+        overall_rating: scorecardData.overall_rating ?? null,
         strengths: scorecardData.strengths ?? null,
         concerns: scorecardData.concerns ?? null,
         recommendation: scorecardData.recommendation,
