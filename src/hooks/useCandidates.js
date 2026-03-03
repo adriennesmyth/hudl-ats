@@ -80,6 +80,15 @@ export function useCandidates() {
       })
     }
 
+    // Fire-and-forget: send confirmation + recruiter notification emails
+    fetch('/api/send-emails', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    }).catch(() => {
+      // Email failure should never block the application submission
+    })
+
     return data
   }, [])
 
