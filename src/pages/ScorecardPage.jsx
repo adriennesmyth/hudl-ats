@@ -54,26 +54,29 @@ function StarRatingInput({ value, onChange }) {
   )
 }
 
-function RecommendationPicker({ options, register, error }) {
+function RecommendationPicker({ options, value, onChange, error }) {
   return (
     <div>
       <div className="flex flex-wrap gap-2">
-        {options.map(({ value, label, color }) => (
-          <label key={value} className="cursor-pointer">
-            <input
-              type="radio"
-              value={value}
-              className="sr-only peer"
-              {...register('recommendation', { required: 'Please select a recommendation' })}
-            />
-            <span
-              className="inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold border-2 transition-all peer-checked:scale-105"
-              style={{ borderColor: color, color, backgroundColor: 'transparent' }}
+        {options.map((opt) => {
+          const selected = value === opt.value
+          return (
+            <button
+              key={opt.value}
+              type="button"
+              onClick={() => onChange(opt.value)}
+              className="px-4 py-2 rounded-full text-sm font-semibold border-2 transition-all"
+              style={{
+                borderColor: opt.color,
+                backgroundColor: selected ? opt.color : 'transparent',
+                color: selected ? '#ffffff' : opt.color,
+                transform: selected ? 'scale(1.05)' : 'scale(1)',
+              }}
             >
-              {label}
-            </span>
-          </label>
-        ))}
+              {opt.label}
+            </button>
+          )
+        })}
       </div>
       {error && <p className="text-xs text-red-500 mt-2">{error.message}</p>}
     </div>
@@ -286,6 +289,7 @@ export function ScorecardPage() {
                 <Controller
                   name="overall_rating"
                   control={control}
+                  shouldUnregister
                   rules={{ min: { value: 1, message: 'Please provide a rating' } }}
                   render={({ field }) => (
                     <StarRatingInput value={field.value} onChange={field.onChange} />
@@ -302,10 +306,18 @@ export function ScorecardPage() {
                 {isHM ? 'Final Decision' : 'Recommendation'}{' '}
                 <span className="text-hudl-orange">*</span>
               </label>
-              <RecommendationPicker
-                options={isHM ? HM_DECISIONS : INTERVIEW_RECOMMENDATIONS}
-                register={register}
-                error={errors.recommendation}
+              <Controller
+                name="recommendation"
+                control={control}
+                rules={{ required: 'Please select a recommendation' }}
+                render={({ field }) => (
+                  <RecommendationPicker
+                    options={isHM ? HM_DECISIONS : INTERVIEW_RECOMMENDATIONS}
+                    value={field.value}
+                    onChange={field.onChange}
+                    error={errors.recommendation}
+                  />
+                )}
               />
             </div>
           </div>
