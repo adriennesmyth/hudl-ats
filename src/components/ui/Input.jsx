@@ -1,4 +1,6 @@
-export function Input({ label, error, hint, className = '', ...props }) {
+import { forwardRef } from 'react'
+
+export const Input = forwardRef(function Input({ label, error, hint, className = '', ...props }, ref) {
   return (
     <div className="flex flex-col gap-1">
       {label && (
@@ -8,6 +10,7 @@ export function Input({ label, error, hint, className = '', ...props }) {
         </label>
       )}
       <input
+        ref={ref}
         className={`border rounded-lg px-3 py-2 text-sm bg-white transition-colors
           focus:outline-none focus:ring-2 focus:ring-hudl-orange/40 focus:border-hudl-orange
           disabled:bg-gray-50 disabled:text-gray-500
@@ -19,9 +22,9 @@ export function Input({ label, error, hint, className = '', ...props }) {
       {error && <p className="text-xs text-red-500">{error}</p>}
     </div>
   )
-}
+})
 
-export function Textarea({ label, error, hint, className = '', ...props }) {
+export const Textarea = forwardRef(function Textarea({ label, error, hint, className = '', ...props }, ref) {
   return (
     <div className="flex flex-col gap-1">
       {label && (
@@ -31,6 +34,7 @@ export function Textarea({ label, error, hint, className = '', ...props }) {
         </label>
       )}
       <textarea
+        ref={ref}
         rows={4}
         className={`border rounded-lg px-3 py-2 text-sm bg-white transition-colors resize-none
           focus:outline-none focus:ring-2 focus:ring-hudl-orange/40 focus:border-hudl-orange
@@ -42,9 +46,9 @@ export function Textarea({ label, error, hint, className = '', ...props }) {
       {error && <p className="text-xs text-red-500">{error}</p>}
     </div>
   )
-}
+})
 
-export function Select({ label, error, children, className = '', ...props }) {
+export const Select = forwardRef(function Select({ label, error, children, className = '', ...props }, ref) {
   return (
     <div className="flex flex-col gap-1">
       {label && (
@@ -54,6 +58,7 @@ export function Select({ label, error, children, className = '', ...props }) {
         </label>
       )}
       <select
+        ref={ref}
         className={`border rounded-lg px-3 py-2 text-sm bg-white transition-colors
           focus:outline-none focus:ring-2 focus:ring-hudl-orange/40 focus:border-hudl-orange
           ${error ? 'border-red-400' : 'border-gray-300'}
@@ -65,4 +70,4 @@ export function Select({ label, error, children, className = '', ...props }) {
       {error && <p className="text-xs text-red-500">{error}</p>}
     </div>
   )
-}
+})
