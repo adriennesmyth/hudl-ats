@@ -105,7 +105,7 @@ export function ScorecardPage() {
     control,
     reset,
     formState: { errors },
-  } = useForm({ defaultValues: { overall_rating: 0 } })
+  } = useForm({ defaultValues: { overall_rating: 0 }, shouldUnregister: true })
 
   useEffect(() => {
     const load = async () => {
