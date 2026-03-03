@@ -14,6 +14,9 @@ import {
   ChevronRight,
   Loader2,
   ExternalLink,
+  CheckCircle,
+  XCircle,
+  MinusCircle,
 } from 'lucide-react'
 import { Button } from '../components/ui/Button'
 import { Badge, RecommendationBadge } from '../components/ui/Badge'
@@ -60,6 +63,14 @@ function StarRating({ rating }) {
       ))}
     </div>
   )
+}
+
+const HM_DECISION_MAP = {
+  strong_yes: { label: 'Hire', color: '#16A34A', icon: CheckCircle, bg: '#f0fdf4', border: '#bbf7d0' },
+  yes: { label: 'Hire', color: '#16A34A', icon: CheckCircle, bg: '#f0fdf4', border: '#bbf7d0' },
+  neutral: { label: 'Hold', color: '#CA8A04', icon: MinusCircle, bg: '#fefce8', border: '#fef08a' },
+  no: { label: 'No Hire', color: '#DC2626', icon: XCircle, bg: '#fef2f2', border: '#fecaca' },
+  strong_no: { label: 'No Hire', color: '#DC2626', icon: XCircle, bg: '#fef2f2', border: '#fecaca' },
 }
 
 export function CandidateProfilePage() {
@@ -122,6 +133,12 @@ export function CandidateProfilePage() {
         year: 'numeric',
       })
     : ''
+
+  const interviewScorecards = scorecards.filter(
+    (sc) => !sc.scorecard_type || sc.scorecard_type === 'interview'
+  )
+  const hmDecisions = scorecards.filter((sc) => sc.scorecard_type === 'hiring_manager')
+  const latestHMDecision = hmDecisions[0] ?? null
 
   if (loading) {
     return (
@@ -189,12 +206,7 @@ export function CandidateProfilePage() {
               href={candidate.linkedin_url}
             />
             {candidate.cv_url && (
-              <InfoRow
-                icon={FileText}
-                label="CV"
-                value="Download CV"
-                href={candidate.cv_url}
-              />
+              <InfoRow icon={FileText} label="CV" value="Download CV" href={candidate.cv_url} />
             )}
           </div>
 
@@ -225,78 +237,151 @@ export function CandidateProfilePage() {
           </div>
         </div>
 
-        {/* RIGHT: History + Scorecards */}
-        <div className="col-span-2 space-y-5">
-          {/* Add scorecard */}
-          <div className="flex items-center justify-between">
-            <h2 className="text-base font-bold text-hudl-dark">Interview Scorecards</h2>
-            <Button
-              size="sm"
-              onClick={() => navigate(`/candidates/${id}/scorecard`)}
-            >
-              <ClipboardList size={14} />
-              Add Scorecard
-            </Button>
-          </div>
+        {/* RIGHT: HM Decision + Scorecards + History */}
+        <div className="col-span-2 space-y-6">
 
-          {scorecards.length === 0 ? (
-            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-8 text-center">
-              <ClipboardList size={28} className="text-gray-300 mx-auto mb-3" />
-              <p className="text-sm text-gray-400">No scorecards yet.</p>
-              <p className="text-xs text-gray-400 mt-1">
-                Add a scorecard after each interview stage.
-              </p>
+          {/* Hiring Manager Decision */}
+          <div>
+            <div className="flex items-center justify-between mb-3">
+              <h2 className="text-base font-bold text-hudl-dark">Hiring Decision</h2>
+              <Button
+                size="sm"
+                variant={latestHMDecision ? 'secondary' : 'primary'}
+                onClick={() => navigate(`/candidates/${id}/scorecard?type=hiring_manager`)}
+              >
+                <UserCheck size={14} />
+                {latestHMDecision ? 'Update Decision' : 'Record Decision'}
+              </Button>
             </div>
-          ) : (
-            <div className="space-y-3">
-              {scorecards.map((sc) => (
+
+            {latestHMDecision ? (() => {
+              const decision = HM_DECISION_MAP[latestHMDecision.recommendation] ?? HM_DECISION_MAP.neutral
+              const DecisionIcon = decision.icon
+              return (
                 <div
-                  key={sc.id}
-                  className="bg-white rounded-xl border border-gray-100 shadow-sm p-5"
+                  className="rounded-xl border p-5"
+                  style={{ backgroundColor: decision.bg, borderColor: decision.border }}
                 >
-                  <div className="flex items-start justify-between gap-4 mb-3">
-                    <div>
-                      <div className="flex items-center gap-2 mb-1">
-                        {sc.stage && <Badge color={sc.stage.color}>{sc.stage.name}</Badge>}
-                        <RecommendationBadge value={sc.recommendation} />
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex items-center gap-3">
+                      <DecisionIcon size={28} style={{ color: decision.color }} />
+                      <div>
+                        <p className="text-lg font-bold" style={{ color: decision.color }}>
+                          {decision.label}
+                        </p>
+                        <p className="text-sm text-gray-600">
+                          by {latestHMDecision.interviewer_name} ·{' '}
+                          {new Date(latestHMDecision.created_at).toLocaleDateString('en-GB', {
+                            day: 'numeric',
+                            month: 'short',
+                            year: 'numeric',
+                          })}
+                        </p>
                       </div>
-                      <p className="text-sm font-semibold text-gray-900">{sc.interviewer_name}</p>
-                      <p className="text-xs text-gray-400">
-                        {new Date(sc.created_at).toLocaleDateString('en-GB', {
-                          day: 'numeric',
-                          month: 'short',
-                          year: 'numeric',
-                        })}
-                      </p>
                     </div>
-                    <StarRating rating={sc.overall_rating} />
                   </div>
-                  {sc.strengths && (
-                    <div className="mt-2">
-                      <p className="text-xs font-medium text-gray-400 mb-1">Strengths</p>
-                      <p className="text-sm text-gray-600 bg-gray-50 rounded-lg px-4 py-3 leading-relaxed">
-                        {sc.strengths}
-                      </p>
-                    </div>
-                  )}
-                  {sc.concerns && (
-                    <div className="mt-2">
-                      <p className="text-xs font-medium text-gray-400 mb-1">Concerns</p>
-                      <p className="text-sm text-gray-600 bg-gray-50 rounded-lg px-4 py-3 leading-relaxed">
-                        {sc.concerns}
-                      </p>
-                    </div>
+                  {latestHMDecision.concerns && (
+                    <p className="mt-3 text-sm text-gray-700 leading-relaxed border-t pt-3"
+                       style={{ borderColor: decision.border }}>
+                      {latestHMDecision.concerns}
+                    </p>
                   )}
                 </div>
-              ))}
-            </div>
-          )}
+              )
+            })() : (
+              <div className="bg-white rounded-2xl border border-dashed border-gray-200 p-8 text-center">
+                <UserCheck size={28} className="text-gray-300 mx-auto mb-3" />
+                <p className="text-sm font-medium text-gray-500">No hiring decision yet</p>
+                <p className="text-xs text-gray-400 mt-1 mb-4">
+                  Record the final hire / hold / no hire decision here.
+                </p>
+                <Button
+                  size="sm"
+                  onClick={() => navigate(`/candidates/${id}/scorecard?type=hiring_manager`)}
+                >
+                  Record Decision
+                </Button>
+              </div>
+            )}
+          </div>
 
-          {/* Stage history */}
+          {/* Interview Scorecards */}
+          <div>
+            <div className="flex items-center justify-between mb-3">
+              <h2 className="text-base font-bold text-hudl-dark">
+                Interview Scorecards
+                {interviewScorecards.length > 0 && (
+                  <span className="ml-2 text-sm font-normal text-gray-400">
+                    ({interviewScorecards.length})
+                  </span>
+                )}
+              </h2>
+              <Button size="sm" variant="secondary" onClick={() => navigate(`/candidates/${id}/scorecard`)}>
+                <ClipboardList size={14} />
+                Add Scorecard
+              </Button>
+            </div>
+
+            {interviewScorecards.length === 0 ? (
+              <div className="bg-white rounded-2xl border border-dashed border-gray-200 p-8 text-center">
+                <ClipboardList size={28} className="text-gray-300 mx-auto mb-3" />
+                <p className="text-sm font-medium text-gray-500">No interview feedback yet</p>
+                <p className="text-xs text-gray-400 mt-1 mb-4">
+                  Add a scorecard after each interview to track feedback across the panel.
+                </p>
+                <Button size="sm" variant="secondary" onClick={() => navigate(`/candidates/${id}/scorecard`)}>
+                  Add First Scorecard
+                </Button>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {interviewScorecards.map((sc) => (
+                  <div key={sc.id} className="bg-white rounded-xl border border-gray-100 shadow-sm p-5">
+                    <div className="flex items-start justify-between gap-4 mb-3">
+                      <div>
+                        <div className="flex items-center gap-2 mb-1">
+                          {sc.stage && <Badge color={sc.stage.color}>{sc.stage.name}</Badge>}
+                          <RecommendationBadge value={sc.recommendation} />
+                        </div>
+                        <p className="text-sm font-semibold text-gray-900">{sc.interviewer_name}</p>
+                        <p className="text-xs text-gray-400">
+                          {new Date(sc.created_at).toLocaleDateString('en-GB', {
+                            day: 'numeric',
+                            month: 'short',
+                            year: 'numeric',
+                          })}
+                        </p>
+                      </div>
+                      {sc.overall_rating > 0 && <StarRating rating={sc.overall_rating} />}
+                    </div>
+                    {sc.strengths && (
+                      <div className="mt-2">
+                        <p className="text-xs font-medium text-gray-400 mb-1">Strengths</p>
+                        <p className="text-sm text-gray-600 bg-gray-50 rounded-lg px-4 py-3 leading-relaxed">
+                          {sc.strengths}
+                        </p>
+                      </div>
+                    )}
+                    {sc.concerns && (
+                      <div className="mt-2">
+                        <p className="text-xs font-medium text-gray-400 mb-1">Concerns</p>
+                        <p className="text-sm text-gray-600 bg-gray-50 rounded-lg px-4 py-3 leading-relaxed">
+                          {sc.concerns}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Stage History */}
           <div>
             <h2 className="text-base font-bold text-hudl-dark mb-3">Stage History</h2>
             {history.length === 0 ? (
-              <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 text-center">
+              <div className="bg-white rounded-2xl border border-dashed border-gray-200 p-6 text-center">
+                <Clock size={24} className="text-gray-300 mx-auto mb-2" />
                 <p className="text-sm text-gray-400">No history available.</p>
               </div>
             ) : (

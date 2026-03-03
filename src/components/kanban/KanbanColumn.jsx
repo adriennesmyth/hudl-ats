@@ -39,9 +39,12 @@ export function KanbanColumn({ stage, candidates }) {
             ))}
             {provided.placeholder}
             {candidates.length === 0 && !snapshot.isDraggingOver && (
-              <div className="flex flex-col items-center justify-center h-20 gap-1.5">
-                <Inbox size={16} className="text-gray-300" />
-                <p className="text-xs text-gray-400">No candidates</p>
+              <div className="flex flex-col items-center justify-center h-24 gap-2 px-3">
+                <Inbox size={18} className="text-gray-300" />
+                <p className="text-xs text-gray-400 text-center leading-snug">
+                  No candidates in<br />
+                  <span className="font-medium">{stage.name}</span>
+                </p>
               </div>
             )}
           </div>

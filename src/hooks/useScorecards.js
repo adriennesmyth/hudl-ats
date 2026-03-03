@@ -9,7 +9,7 @@ export function useScorecards() {
     setLoading(true)
     const { data, error } = await supabase
       .from('scorecards')
-      .select('id, candidate_id, stage_id, interviewer_name, overall_rating, strengths, concerns, recommendation, created_at, stage:stage_id(name, color)')
+      .select('id, candidate_id, stage_id, scorecard_type, interviewer_name, overall_rating, strengths, concerns, recommendation, created_at, stage:stage_id(name, color)')
       .eq('candidate_id', candidateId)
       .order('created_at', { ascending: false })
     if (!error) setScorecards(data ?? [])
@@ -21,9 +21,10 @@ export function useScorecards() {
       .from('scorecards')
       .insert({
         candidate_id: scorecardData.candidate_id,
-        stage_id: scorecardData.stage_id,
+        scorecard_type: scorecardData.scorecard_type ?? 'interview',
+        stage_id: scorecardData.stage_id ?? null,
         interviewer_name: scorecardData.interviewer_name,
-        overall_rating: scorecardData.overall_rating,
+        overall_rating: scorecardData.overall_rating ?? 0,
         strengths: scorecardData.strengths ?? null,
         concerns: scorecardData.concerns ?? null,
         recommendation: scorecardData.recommendation,
