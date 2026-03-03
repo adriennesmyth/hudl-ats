@@ -1,19 +1,10 @@
 import { useState, useEffect, useCallback } from 'react'
 import { DragDropContext } from '@hello-pangea/dnd'
 import { KanbanColumn } from './KanbanColumn'
-import { useStages } from '../../hooks/useStages'
-import { useCandidates } from '../../hooks/useCandidates'
 import { Loader2 } from 'lucide-react'
 
-export function KanbanBoard() {
-  const { stages, loading: stagesLoading, fetchStages } = useStages()
-  const { candidates, loading: candidatesLoading, fetchCandidates, updateCandidateStage } = useCandidates()
+export function KanbanBoard({ stages, candidates, updateCandidateStage, refetchCandidates }) {
   const [candidatesByStage, setCandidatesByStage] = useState({})
-
-  useEffect(() => {
-    fetchStages()
-    fetchCandidates()
-  }, [fetchStages, fetchCandidates])
 
   // Group candidates by their current stage
   useEffect(() => {
@@ -66,16 +57,13 @@ export function KanbanBoard() {
       try {
         await updateCandidateStage(draggableId, destStage.id, destStage.name)
       } catch {
-        // Revert on failure
-        fetchCandidates()
+        refetchCandidates()
       }
     },
-    [stages, updateCandidateStage, fetchCandidates],
+    [stages, updateCandidateStage, refetchCandidates],
   )
 
-  const isLoading = stagesLoading || candidatesLoading
-
-  if (isLoading && stages.length === 0) {
+  if (stages.length === 0 && candidates.length === 0) {
     return (
       <div className="flex items-center justify-center h-64">
         <Loader2 className="animate-spin text-hudl-orange" size={32} />
