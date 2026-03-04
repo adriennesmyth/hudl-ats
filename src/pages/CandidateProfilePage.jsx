@@ -17,6 +17,8 @@ import {
   CheckCircle,
   XCircle,
   MinusCircle,
+  Phone,
+  Building2,
 } from 'lucide-react'
 import { Button } from '../components/ui/Button'
 import { Badge, RecommendationBadge } from '../components/ui/Badge'
@@ -196,7 +198,18 @@ export function CandidateProfilePage() {
               Details
             </h2>
             <InfoRow icon={Mail} label="Email" value={candidate.email} href={`mailto:${candidate.email}`} />
-            <InfoRow icon={MapPin} label="Address" value={candidate.address} />
+            {(candidate.phone_country_code || candidate.phone_number) && (
+              <InfoRow
+                icon={Phone}
+                label="Phone"
+                value={[candidate.phone_country_code, candidate.phone_number].filter(Boolean).join(' ')}
+                href={`tel:${candidate.phone_country_code}${candidate.phone_number}`}
+              />
+            )}
+            <InfoRow icon={MapPin} label="Address" value={candidate.address_line1} />
+            <InfoRow icon={Building2} label="City" value={[candidate.city, candidate.postcode].filter(Boolean).join(', ')} />
+            <InfoRow icon={MapPin} label="Region" value={candidate.state_region} />
+            <InfoRow icon={MapPin} label="Country" value={candidate.country} />
             <InfoRow icon={GraduationCap} label="Education" value={candidate.education_level} />
             <InfoRow icon={UserCheck} label="Referred By" value={candidate.referred_by} />
             <InfoRow

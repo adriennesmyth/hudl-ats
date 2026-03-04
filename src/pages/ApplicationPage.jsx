@@ -15,6 +15,37 @@ const EDUCATION_LEVELS = [
   'Other',
 ]
 
+const PHONE_CODES = [
+  { code: '+1',   label: '+1 — US / Canada' },
+  { code: '+44',  label: '+44 — UK' },
+  { code: '+61',  label: '+61 — Australia' },
+  { code: '+64',  label: '+64 — New Zealand' },
+  { code: '+353', label: '+353 — Ireland' },
+  { code: '+27',  label: '+27 — South Africa' },
+  { code: '+49',  label: '+49 — Germany' },
+  { code: '+33',  label: '+33 — France' },
+  { code: '+34',  label: '+34 — Spain' },
+  { code: '+39',  label: '+39 — Italy' },
+  { code: '+31',  label: '+31 — Netherlands' },
+  { code: '+46',  label: '+46 — Sweden' },
+  { code: '+47',  label: '+47 — Norway' },
+  { code: '+45',  label: '+45 — Denmark' },
+  { code: '+358', label: '+358 — Finland' },
+  { code: '+91',  label: '+91 — India' },
+  { code: '+86',  label: '+86 — China' },
+  { code: '+81',  label: '+81 — Japan' },
+  { code: '+82',  label: '+82 — South Korea' },
+  { code: '+65',  label: '+65 — Singapore' },
+  { code: '+60',  label: '+60 — Malaysia' },
+  { code: '+971', label: '+971 — UAE' },
+  { code: '+966', label: '+966 — Saudi Arabia' },
+  { code: '+55',  label: '+55 — Brazil' },
+  { code: '+52',  label: '+52 — Mexico' },
+  { code: '+54',  label: '+54 — Argentina' },
+  { code: '+7',   label: '+7 — Russia' },
+  { code: '+63',  label: '+63 — Philippines' },
+]
+
 export function ApplicationPage() {
   const {
     register,
@@ -24,6 +55,7 @@ export function ApplicationPage() {
   } = useForm()
   const { createCandidate } = useCandidates()
   const [cvFile, setCvFile] = useState(null)
+  const [cvError, setCvError] = useState(null)
   const [submitting, setSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [submitError, setSubmitError] = useState(null)
@@ -33,11 +65,11 @@ export function ApplicationPage() {
     const file = e.target.files?.[0]
     if (!file) return
     if (file.size > 10 * 1024 * 1024) {
-      setSubmitError('CV file must be under 10MB.')
+      setCvError('CV file must be under 10MB.')
       return
     }
     setCvFile(file)
-    setSubmitError(null)
+    setCvError(null)
   }
 
   const removeFile = () => {
@@ -46,8 +78,13 @@ export function ApplicationPage() {
   }
 
   const onSubmit = async (data) => {
+    if (!cvFile) {
+      setCvError('Please upload your CV.')
+      return
+    }
     setSubmitting(true)
     setSubmitError(null)
+    setCvError(null)
     try {
       await createCandidate(data, cvFile)
       setSubmitted(true)
@@ -96,7 +133,6 @@ export function ApplicationPage() {
       </header>
 
       <div className="max-w-2xl mx-auto px-6 py-10">
-        {/* Hero */}
         <div className="mb-8">
           <h1 className="text-2xl font-bold text-hudl-dark mb-2">Apply to Hudl</h1>
           <p className="text-gray-500">
@@ -107,7 +143,8 @@ export function ApplicationPage() {
 
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
           <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-            {/* Personal Info */}
+
+            {/* Personal Information */}
             <div className="px-6 pt-6 pb-4">
               <h2 className="text-sm font-semibold text-hudl-orange uppercase tracking-wider mb-4">
                 Personal Information
@@ -144,13 +181,83 @@ export function ApplicationPage() {
                   })}
                 />
               </div>
-              <div className="mt-4">
-                <Textarea
-                  label="Address"
-                  placeholder="123 Main Street, City, Country"
-                  error={errors.address?.message}
-                  rows={2}
-                  {...register('address')}
+              <div className="mt-4 flex gap-3">
+                <div className="w-44 shrink-0">
+                  <Select
+                    label="Country Code"
+                    required
+                    error={errors.phone_country_code?.message}
+                    {...register('phone_country_code', { required: 'Required' })}
+                  >
+                    <option value="">Select…</option>
+                    {PHONE_CODES.map(({ code, label }) => (
+                      <option key={code} value={code}>{label}</option>
+                    ))}
+                  </Select>
+                </div>
+                <div className="flex-1">
+                  <Input
+                    label="Phone Number"
+                    type="tel"
+                    required
+                    placeholder="7700 900123"
+                    error={errors.phone_number?.message}
+                    {...register('phone_number', {
+                      required: 'Phone number is required',
+                      pattern: {
+                        value: /^[\d\s\-().]+$/,
+                        message: 'Please enter a valid phone number',
+                      },
+                    })}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="border-t border-gray-50" />
+
+            {/* Address */}
+            <div className="px-6 py-4">
+              <h2 className="text-sm font-semibold text-hudl-orange uppercase tracking-wider mb-4">
+                Address
+              </h2>
+              <Input
+                label="Address Line 1"
+                required
+                placeholder="123 Main Street"
+                error={errors.address_line1?.message}
+                {...register('address_line1', { required: 'Address is required' })}
+              />
+              <div className="grid grid-cols-2 gap-4 mt-4">
+                <Input
+                  label="City"
+                  required
+                  placeholder="London"
+                  error={errors.city?.message}
+                  {...register('city', { required: 'City is required' })}
+                />
+                <Input
+                  label="Postcode / ZIP"
+                  required
+                  placeholder="SW1A 1AA"
+                  error={errors.postcode?.message}
+                  {...register('postcode', { required: 'Postcode is required' })}
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-4 mt-4">
+                <Input
+                  label="State / County / Region"
+                  required
+                  placeholder="Greater London"
+                  error={errors.state_region?.message}
+                  {...register('state_region', { required: 'State / region is required' })}
+                />
+                <Input
+                  label="Country"
+                  required
+                  placeholder="United Kingdom"
+                  error={errors.country?.message}
+                  {...register('country', { required: 'Country is required' })}
                 />
               </div>
             </div>
@@ -165,14 +272,13 @@ export function ApplicationPage() {
               <div className="grid grid-cols-2 gap-4">
                 <Select
                   label="Education Level"
+                  required
                   error={errors.education_level?.message}
-                  {...register('education_level')}
+                  {...register('education_level', { required: 'Education level is required' })}
                 >
                   <option value="">Select level…</option>
                   {EDUCATION_LEVELS.map((level) => (
-                    <option key={level} value={level}>
-                      {level}
-                    </option>
+                    <option key={level} value={level}>{level}</option>
                   ))}
                 </Select>
                 <Input
@@ -186,7 +292,7 @@ export function ApplicationPage() {
 
             <div className="border-t border-gray-50" />
 
-            {/* Links & CV */}
+            {/* Links & Documents */}
             <div className="px-6 py-4">
               <h2 className="text-sm font-semibold text-hudl-orange uppercase tracking-wider mb-4">
                 Links &amp; Documents
@@ -194,9 +300,11 @@ export function ApplicationPage() {
               <Input
                 label="LinkedIn Profile URL"
                 type="url"
+                required
                 placeholder="https://linkedin.com/in/yourprofile"
                 error={errors.linkedin_url?.message}
                 {...register('linkedin_url', {
+                  required: 'LinkedIn URL is required',
                   pattern: {
                     value: /^https?:\/\/(www\.)?linkedin\.com\/.+/i,
                     message: 'Please enter a valid LinkedIn URL',
@@ -207,7 +315,7 @@ export function ApplicationPage() {
               {/* CV Upload */}
               <div className="mt-4">
                 <label className="text-sm font-medium text-gray-700 block mb-1">
-                  CV / Résumé
+                  CV / Résumé <span className="text-hudl-orange">*</span>
                 </label>
                 {cvFile ? (
                   <div className="flex items-center gap-3 border border-gray-200 rounded-lg px-4 py-3 bg-hudl-orange-light">
@@ -216,21 +324,17 @@ export function ApplicationPage() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-gray-900 truncate">{cvFile.name}</p>
-                      <p className="text-xs text-gray-500">
-                        {(cvFile.size / 1024).toFixed(1)} KB
-                      </p>
+                      <p className="text-xs text-gray-500">{(cvFile.size / 1024).toFixed(1)} KB</p>
                     </div>
-                    <button
-                      type="button"
-                      onClick={removeFile}
-                      className="text-gray-400 hover:text-gray-600"
-                    >
+                    <button type="button" onClick={removeFile} className="text-gray-400 hover:text-gray-600">
                       <X size={16} />
                     </button>
                   </div>
                 ) : (
-                  <label className="flex flex-col items-center justify-center gap-2 border-2 border-dashed border-gray-200 rounded-xl px-4 py-8 cursor-pointer hover:border-hudl-orange hover:bg-hudl-orange-light/50 transition-colors">
-                    <Upload size={22} className="text-gray-400" />
+                  <label className={`flex flex-col items-center justify-center gap-2 border-2 border-dashed rounded-xl px-4 py-8 cursor-pointer transition-colors ${
+                    cvError ? 'border-red-400 bg-red-50' : 'border-gray-200 hover:border-hudl-orange hover:bg-hudl-orange-light/50'
+                  }`}>
+                    <Upload size={22} className={cvError ? 'text-red-400' : 'text-gray-400'} />
                     <div className="text-center">
                       <p className="text-sm text-gray-600">
                         <span className="font-semibold text-hudl-orange">Click to upload</span>{' '}
@@ -247,6 +351,7 @@ export function ApplicationPage() {
                     />
                   </label>
                 )}
+                {cvError && <p className="text-xs text-red-500 mt-1">{cvError}</p>}
               </div>
             </div>
 
@@ -259,10 +364,7 @@ export function ApplicationPage() {
               )}
               <Button type="submit" size="lg" disabled={submitting} className="w-full">
                 {submitting ? (
-                  <>
-                    <Loader2 size={16} className="animate-spin" />
-                    Submitting…
-                  </>
+                  <><Loader2 size={16} className="animate-spin" />Submitting…</>
                 ) : (
                   'Submit Application'
                 )}
