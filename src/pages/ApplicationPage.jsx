@@ -104,7 +104,6 @@ function RightPanel() {
   return (
     <div
       className="hidden xl:flex xl:w-64 2xl:w-72 shrink-0 bg-hudl-dark sticky top-0 h-screen overflow-hidden flex-col justify-center px-10"
-      aria-hidden="true"
     >
       {/* Giant ghosted swirl mark */}
       <div className="absolute inset-0 flex items-center justify-center">
@@ -115,9 +114,14 @@ function RightPanel() {
 
       {/* Values list */}
       <div className="relative z-10">
-        <p className="text-[10px] font-semibold text-hudl-orange uppercase tracking-widest mb-6">
-          Our Values
-        </p>
+        <a
+          href="https://www.hudl.com/en_gb/about"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-block text-[10px] font-semibold text-hudl-orange uppercase tracking-widest mb-6 hover:text-hudl-orange-hover underline underline-offset-2 decoration-hudl-orange/40 transition-colors"
+        >
+          Our Values ↗
+        </a>
         <ul className="space-y-0">
           {CORE_VALUES.map((value, i) => (
             <li key={value}>
