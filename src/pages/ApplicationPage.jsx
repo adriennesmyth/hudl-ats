@@ -227,8 +227,8 @@ export function ApplicationPage() {
         <header className="bg-hudl-dark border-b border-white/10 px-6 py-4">
           <div className="max-w-2xl mx-auto flex items-center gap-4">
             {HUDL_LOGO}
-            <div className="w-px h-6 bg-white/20" />
-            <p className="text-gray-400 text-sm">Careers</p>
+            <div className="w-px h-8 bg-white/20" />
+            <p className="text-white text-xl font-semibold tracking-tight">Careers</p>
           </div>
         </header>
 
