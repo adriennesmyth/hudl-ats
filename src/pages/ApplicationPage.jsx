@@ -1,10 +1,7 @@
 import { useState, useRef } from 'react'
 import { useForm } from 'react-hook-form'
-import {
-  CheckCircle, Upload, X, Loader2,
-  Globe, BookOpen, Calendar, Users, Quote,
-} from 'lucide-react'
-import { Input, Select, Textarea } from '../components/ui/Input'
+import { CheckCircle, Upload, X, Loader2 } from 'lucide-react'
+import { Input, Select } from '../components/ui/Input'
 import { Button } from '../components/ui/Button'
 import { useCandidates } from '../hooks/useCandidates'
 
@@ -49,99 +46,107 @@ const PHONE_CODES = [
   { code: '+63',  label: '+63 — Philippines' },
 ]
 
-const STATS = [
-  { value: '315K+', label: 'Teams worldwide' },
-  { value: '12',    label: 'Global offices' },
-  { value: '55+',   label: 'Open roles' },
-]
+// Hudl swirl mark — the three orange paths from the logo
+function HudlMark({ size = 120, opacity = 0.12 }) {
+  return (
+    <svg
+      viewBox="0 0 28 28"
+      width={size}
+      height={size}
+      aria-hidden="true"
+      style={{ opacity }}
+    >
+      <path
+        fill="#ff6300"
+        d="M14.5 4.6c-1.8-1.5-4-2.6-6.4-3q-.9.45-1.8 1.2h-.1C4.1 2.2 1.8 3.1.7 5c-1.2 2-.7 4.5.8 6v.1c-.1.6-.1 1.2-.1 1.8 0 3.5 1.4 6.6 3.7 9 .1.1.2 0 .2-.1-.5-1.4-.8-2.8-.8-4.4 0-1.8.4-3.4 1-4.9 0 0 0-.1.1-.1 1.4-.2 2.8-1 3.6-2.4.5-1 .6-2 .5-3v-.1c1.4-1 3-1.7 4.7-2.1.2 0 .2-.2.1-.2"
+      />
+      <path
+        fill="#ff6300"
+        d="M6.9 16.7c-.5 2.3-.3 4.8.6 7.1.6.4 1.3.7 1.9.9l.1.1c.5 2.1 2.4 3.7 4.7 3.7s4.2-1.6 4.7-3.7c0 0 0-.1.1-.1.5-.2 1.1-.5 1.6-.8 3-1.7 5.1-4.5 5.9-7.6 0-.1-.1-.2-.2-.1-.9 1.1-2.1 2.1-3.4 2.9-1.5.9-3.1 1.4-4.8 1.6H18c-.9-1.1-2.3-1.9-3.8-1.9-1.1 0-2 .3-2.8.9h-.1q-2.4-1.05-4.2-3c0-.1-.1-.1-.2 0"
+      />
+      <path
+        fill="#ff6300"
+        d="M21.2 17.2c2.2-.8 4.3-2.2 5.8-4.1 0-.7 0-1.4-.1-2.1v-.1c1.6-1.5 2-4 .8-5.9-1.1-2-3.5-2.8-5.6-2.2H22c-.5-.4-1-.7-1.5-1C17.5.1 14-.3 10.9.5c-.1 0-.1.2 0 .2q2.1.45 4.2 1.5c1.5.9 2.8 2 3.8 3.3v.1c-.5 1.3-.5 2.9.3 4.3.5.9 1.3 1.6 2.2 2 0 0 .1 0 .1.1.2 1.7 0 3.4-.5 5.1.1.1.1.1.2.1"
+      />
+    </svg>
+  )
+}
 
-const BENEFITS = [
-  { icon: Globe,    text: 'Flexible remote & hybrid working' },
-  { icon: BookOpen, text: 'Continuing education support' },
-  { icon: Calendar, text: 'Flexible PTO & sabbatical leave' },
-  { icon: Users,    text: 'Inclusive, collaborative culture' },
-]
+// Decorative side panel — replace backgroundImage value with a real Hudl/sports photo URL if available
+function SidePanel({ side = 'left' }) {
+  return (
+    <div
+      className="hidden xl:flex xl:w-72 2xl:w-80 flex-col shrink-0 bg-hudl-dark sticky top-0 h-screen overflow-hidden"
+      aria-hidden="true"
+    >
+      {/* Large decorative mark — top */}
+      <div className={`absolute top-[-30px] ${side === 'left' ? '-left-8' : '-right-8'}`}>
+        <HudlMark size={260} opacity={0.07} />
+      </div>
+
+      {/* Large decorative mark — bottom */}
+      <div className={`absolute bottom-[-40px] ${side === 'left' ? '-right-10' : '-left-10'}`}>
+        <HudlMark size={220} opacity={0.05} />
+      </div>
+
+      {/* Vertical orange accent line */}
+      <div
+        className={`absolute top-0 ${side === 'left' ? 'right-0' : 'left-0'} w-[3px] h-full bg-gradient-to-b from-transparent via-hudl-orange to-transparent opacity-40`}
+      />
+
+      {/* Content */}
+      <div className="relative z-10 flex flex-col h-full p-8 justify-between">
+        {/* Top: logo mark + tagline */}
+        <div>
+          <HudlMark size={48} opacity={1} />
+          <p className="mt-4 text-sm font-semibold text-white leading-snug">
+            We help teams{' '}
+            <span className="text-hudl-orange">realise what they're capable of.</span>
+          </p>
+          <p className="mt-2 text-xs text-gray-500 leading-relaxed">
+            315,000+ teams across 40+ sports use Hudl to capture, analyse, and share their performance.
+          </p>
+        </div>
+
+        {/* Middle: stat pills */}
+        <div className="space-y-3">
+          {[
+            { value: '315K+', label: 'Teams worldwide' },
+            { value: '40+',   label: 'Sports covered' },
+            { value: '12',    label: 'Global offices' },
+          ].map(({ value, label }) => (
+            <div
+              key={label}
+              className="flex items-center gap-3 bg-white/5 border border-white/10 rounded-xl px-4 py-3"
+            >
+              <span className="text-lg font-bold text-hudl-orange">{value}</span>
+              <span className="text-xs text-gray-400">{label}</span>
+            </div>
+          ))}
+        </div>
+
+        {/* Bottom: quote */}
+        <div className="border-t border-white/10 pt-5">
+          <p className="text-xs text-gray-400 italic leading-relaxed">
+            "It's amazing to learn every day something new about colleagues' culture, beliefs, and experiences."
+          </p>
+          <p className="text-xs text-hudl-orange mt-2 font-medium">
+            Guilia Menini — Support Specialist
+          </p>
+        </div>
+      </div>
+    </div>
+  )
+}
 
 const HUDL_LOGO = (
-  <svg viewBox="0 0 87.2 28.5" height="24" aria-label="Hudl">
+  <svg viewBox="0 0 87.2 28.5" height="22" aria-label="Hudl">
     <path fill="#ff6300" d="M14.5 4.6c-1.8-1.5-4-2.6-6.4-3q-.9.45-1.8 1.2h-.1C4.1 2.2 1.8 3.1.7 5c-1.2 2-.7 4.5.8 6v.1c-.1.6-.1 1.2-.1 1.8 0 3.5 1.4 6.6 3.7 9 .1.1.2 0 .2-.1-.5-1.4-.8-2.8-.8-4.4 0-1.8.4-3.4 1-4.9 0 0 0-.1.1-.1 1.4-.2 2.8-1 3.6-2.4.5-1 .6-2 .5-3v-.1c1.4-1 3-1.7 4.7-2.1.2 0 .2-.2.1-.2"/>
     <path fill="#ff6300" d="M6.9 16.7c-.5 2.3-.3 4.8.6 7.1.6.4 1.3.7 1.9.9l.1.1c.5 2.1 2.4 3.7 4.7 3.7s4.2-1.6 4.7-3.7c0 0 0-.1.1-.1.5-.2 1.1-.5 1.6-.8 3-1.7 5.1-4.5 5.9-7.6 0-.1-.1-.2-.2-.1-.9 1.1-2.1 2.1-3.4 2.9-1.5.9-3.1 1.4-4.8 1.6H18c-.9-1.1-2.3-1.9-3.8-1.9-1.1 0-2 .3-2.8.9h-.1q-2.4-1.05-4.2-3c0-.1-.1-.1-.2 0"/>
     <path fill="#ff6300" d="M21.2 17.2c2.2-.8 4.3-2.2 5.8-4.1 0-.7 0-1.4-.1-2.1v-.1c1.6-1.5 2-4 .8-5.9-1.1-2-3.5-2.8-5.6-2.2H22c-.5-.4-1-.7-1.5-1C17.5.1 14-.3 10.9.5c-.1 0-.1.2 0 .2q2.1.45 4.2 1.5c1.5.9 2.8 2 3.8 3.3v.1c-.5 1.3-.5 2.9.3 4.3.5.9 1.3 1.6 2.2 2 0 0 .1 0 .1.1.2 1.7 0 3.4-.5 5.1.1.1.1.1.2.1"/>
     <path fill="white" d="M40.8 24.7v-9.6c0-1-.5-1.6-1.7-1.6-.4 0-.8.1-1.2.2v11h-5.5V2.6H38v7.2c.8-.3 1.7-.5 2.7-.5 3.7 0 5.6 1.9 5.6 5.2v10.2zm14.8.4c-4.7 0-7-1.7-7-5.9V9.5h5.5v9.7c0 1 .5 1.4 1.5 1.4.5 0 .9-.1 1.2-.1v-11h5.5v14.4c-1.5.7-4.2 1.2-6.7 1.2m16.9 0c-5.2 0-8-2.8-8-8 0-4.7 2.4-7.7 7.2-7.7.5 0 1.2.1 1.6.2v-7h5.5V24c-1.3.6-3.6 1.1-6.3 1.1m.8-11.5c-.2-.1-.6-.2-1-.2-1.5 0-2.3 1.4-2.3 3.6 0 2.6.8 3.8 2.4 3.8.4 0 .7 0 .9-.1zm8.3 11.1V2.6h5.5v22.1z"/>
   </svg>
 )
-
-function BrandPanel() {
-  return (
-    <div className="hidden lg:flex lg:w-5/12 bg-hudl-dark flex-col fixed top-0 left-0 h-screen p-10 overflow-y-auto">
-      {/* Logo */}
-      <div>{HUDL_LOGO}</div>
-
-      {/* Main copy */}
-      <div className="mt-12 flex-1">
-        <h1 className="text-3xl font-bold text-white leading-tight">
-          The best tech for teams.{' '}
-          <span className="text-hudl-orange">Built by the best team in tech.</span>
-        </h1>
-        <p className="mt-4 text-gray-400 text-sm leading-relaxed">
-          We build technology that helps more than 315,000 teams around the world
-          realize what they're capable of. We believe in the power and potential of sport.
-        </p>
-
-        {/* Stats */}
-        <div className="grid grid-cols-3 gap-3 mt-8">
-          {STATS.map(({ value, label }) => (
-            <div
-              key={label}
-              className="bg-white/5 border border-white/10 rounded-xl p-4 text-center"
-            >
-              <p className="text-2xl font-bold text-hudl-orange">{value}</p>
-              <p className="text-xs text-gray-400 mt-1 leading-tight">{label}</p>
-            </div>
-          ))}
-        </div>
-
-        {/* Benefits */}
-        <div className="mt-8 space-y-3">
-          <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
-            Why Hudl
-          </p>
-          {BENEFITS.map(({ icon: Icon, text }) => (
-            <div key={text} className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-hudl-orange/10 flex items-center justify-center shrink-0">
-                <Icon size={15} className="text-hudl-orange" />
-              </div>
-              <p className="text-sm text-gray-300">{text}</p>
-            </div>
-          ))}
-        </div>
-
-        {/* Office locations */}
-        <div className="mt-8">
-          <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
-            Our offices
-          </p>
-          <p className="text-xs text-gray-500 leading-relaxed">
-            Lincoln NE · Omaha NE · Lexington KY · London · Amsterdam ·
-            Milan · Sydney · Auckland · Tokyo · Mumbai · Beijing · Madrid
-          </p>
-        </div>
-      </div>
-
-      {/* Testimonial */}
-      <div className="mt-10 border-t border-white/10 pt-6">
-        <Quote size={20} className="text-hudl-orange mb-3" />
-        <p className="text-sm text-gray-300 italic leading-relaxed">
-          It's amazing to learn every day something new about colleagues' culture,
-          beliefs, experiences and lifestyle.
-        </p>
-        <p className="text-xs text-hudl-orange mt-3 font-medium">
-          Guilia Menini — Support Specialist
-        </p>
-      </div>
-    </div>
-  )
-}
 
 export function ApplicationPage() {
   const {
@@ -197,8 +202,8 @@ export function ApplicationPage() {
   if (submitted) {
     return (
       <div className="min-h-screen flex">
-        <BrandPanel />
-        <div className="lg:ml-[41.666667%] w-full lg:w-7/12 bg-gray-50 flex items-center justify-center p-10">
+        <SidePanel side="left" />
+        <div className="flex-1 bg-gray-50 flex items-center justify-center p-6">
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-10 max-w-md w-full text-center">
             <div className="w-16 h-16 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-5">
               <CheckCircle size={32} className="text-green-500" />
@@ -212,26 +217,31 @@ export function ApplicationPage() {
             </Button>
           </div>
         </div>
+        <SidePanel side="right" />
       </div>
     )
   }
 
   return (
     <div className="min-h-screen flex">
-      {/* Left: Brand panel */}
-      <BrandPanel />
+      {/* Left decorative panel */}
+      <SidePanel side="left" />
 
-      {/* Right: Form */}
-      <div className="lg:ml-[41.666667%] w-full lg:w-7/12 bg-gray-50 min-h-screen">
-        {/* Mobile header */}
-        <header className="lg:hidden bg-hudl-dark px-6 py-4">
-          {HUDL_LOGO}
+      {/* Centre: form */}
+      <div className="flex-1 bg-gray-50 min-h-screen">
+        {/* Header */}
+        <header className="bg-hudl-dark border-b border-white/10 px-6 py-4">
+          <div className="max-w-2xl mx-auto flex items-center gap-4">
+            {HUDL_LOGO}
+            <div className="w-px h-6 bg-white/20" />
+            <p className="text-gray-400 text-sm">Careers</p>
+          </div>
         </header>
 
-        <div className="max-w-xl mx-auto px-6 py-10">
+        <div className="max-w-2xl mx-auto px-6 py-10">
           <div className="mb-8">
-            <h2 className="text-2xl font-bold text-hudl-dark mb-2">Apply to Hudl</h2>
-            <p className="text-gray-500 text-sm">
+            <h1 className="text-2xl font-bold text-hudl-dark mb-2">Apply to Hudl</h1>
+            <p className="text-gray-500">
               Join a world-class team building technology that helps coaches and athletes win.
               Fields marked <span className="text-hudl-orange">*</span> are required.
             </p>
@@ -407,6 +417,8 @@ export function ApplicationPage() {
                     },
                   })}
                 />
+
+                {/* CV Upload */}
                 <div className="mt-4">
                   <label className="text-sm font-medium text-gray-700 block mb-1">
                     CV / Résumé <span className="text-hudl-orange">*</span>
@@ -471,6 +483,9 @@ export function ApplicationPage() {
           </form>
         </div>
       </div>
+
+      {/* Right decorative panel */}
+      <SidePanel side="right" />
     </div>
   )
 }
