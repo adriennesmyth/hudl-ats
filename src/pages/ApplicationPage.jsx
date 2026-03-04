@@ -118,7 +118,7 @@ function RightPanel() {
           href="https://www.hudl.com/en_gb/about"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-block text-[10px] font-semibold text-hudl-orange uppercase tracking-widest mb-6 hover:text-hudl-orange-hover underline underline-offset-2 decoration-hudl-orange/40 transition-colors"
+          className="inline-block text-sm font-semibold text-hudl-orange uppercase tracking-widest mb-6 hover:text-hudl-orange-hover underline underline-offset-2 decoration-hudl-orange/40 transition-colors"
         >
           Our Values ↗
         </a>
