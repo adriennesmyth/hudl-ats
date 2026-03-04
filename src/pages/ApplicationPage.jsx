@@ -1,6 +1,9 @@
 import { useState, useRef } from 'react'
 import { useForm } from 'react-hook-form'
-import { CheckCircle, Upload, X, Loader2 } from 'lucide-react'
+import {
+  CheckCircle, Upload, X, Loader2,
+  Globe, BookOpen, Calendar, Users, Quote,
+} from 'lucide-react'
 import { Input, Select, Textarea } from '../components/ui/Input'
 import { Button } from '../components/ui/Button'
 import { useCandidates } from '../hooks/useCandidates'
@@ -45,6 +48,100 @@ const PHONE_CODES = [
   { code: '+7',   label: '+7 — Russia' },
   { code: '+63',  label: '+63 — Philippines' },
 ]
+
+const STATS = [
+  { value: '315K+', label: 'Teams worldwide' },
+  { value: '12',    label: 'Global offices' },
+  { value: '55+',   label: 'Open roles' },
+]
+
+const BENEFITS = [
+  { icon: Globe,    text: 'Flexible remote & hybrid working' },
+  { icon: BookOpen, text: 'Continuing education support' },
+  { icon: Calendar, text: 'Flexible PTO & sabbatical leave' },
+  { icon: Users,    text: 'Inclusive, collaborative culture' },
+]
+
+const HUDL_LOGO = (
+  <svg viewBox="0 0 87.2 28.5" height="24" aria-label="Hudl">
+    <path fill="#ff6300" d="M14.5 4.6c-1.8-1.5-4-2.6-6.4-3q-.9.45-1.8 1.2h-.1C4.1 2.2 1.8 3.1.7 5c-1.2 2-.7 4.5.8 6v.1c-.1.6-.1 1.2-.1 1.8 0 3.5 1.4 6.6 3.7 9 .1.1.2 0 .2-.1-.5-1.4-.8-2.8-.8-4.4 0-1.8.4-3.4 1-4.9 0 0 0-.1.1-.1 1.4-.2 2.8-1 3.6-2.4.5-1 .6-2 .5-3v-.1c1.4-1 3-1.7 4.7-2.1.2 0 .2-.2.1-.2"/>
+    <path fill="#ff6300" d="M6.9 16.7c-.5 2.3-.3 4.8.6 7.1.6.4 1.3.7 1.9.9l.1.1c.5 2.1 2.4 3.7 4.7 3.7s4.2-1.6 4.7-3.7c0 0 0-.1.1-.1.5-.2 1.1-.5 1.6-.8 3-1.7 5.1-4.5 5.9-7.6 0-.1-.1-.2-.2-.1-.9 1.1-2.1 2.1-3.4 2.9-1.5.9-3.1 1.4-4.8 1.6H18c-.9-1.1-2.3-1.9-3.8-1.9-1.1 0-2 .3-2.8.9h-.1q-2.4-1.05-4.2-3c0-.1-.1-.1-.2 0"/>
+    <path fill="#ff6300" d="M21.2 17.2c2.2-.8 4.3-2.2 5.8-4.1 0-.7 0-1.4-.1-2.1v-.1c1.6-1.5 2-4 .8-5.9-1.1-2-3.5-2.8-5.6-2.2H22c-.5-.4-1-.7-1.5-1C17.5.1 14-.3 10.9.5c-.1 0-.1.2 0 .2q2.1.45 4.2 1.5c1.5.9 2.8 2 3.8 3.3v.1c-.5 1.3-.5 2.9.3 4.3.5.9 1.3 1.6 2.2 2 0 0 .1 0 .1.1.2 1.7 0 3.4-.5 5.1.1.1.1.1.2.1"/>
+    <path fill="white" d="M40.8 24.7v-9.6c0-1-.5-1.6-1.7-1.6-.4 0-.8.1-1.2.2v11h-5.5V2.6H38v7.2c.8-.3 1.7-.5 2.7-.5 3.7 0 5.6 1.9 5.6 5.2v10.2zm14.8.4c-4.7 0-7-1.7-7-5.9V9.5h5.5v9.7c0 1 .5 1.4 1.5 1.4.5 0 .9-.1 1.2-.1v-11h5.5v14.4c-1.5.7-4.2 1.2-6.7 1.2m16.9 0c-5.2 0-8-2.8-8-8 0-4.7 2.4-7.7 7.2-7.7.5 0 1.2.1 1.6.2v-7h5.5V24c-1.3.6-3.6 1.1-6.3 1.1m.8-11.5c-.2-.1-.6-.2-1-.2-1.5 0-2.3 1.4-2.3 3.6 0 2.6.8 3.8 2.4 3.8.4 0 .7 0 .9-.1zm8.3 11.1V2.6h5.5v22.1z"/>
+  </svg>
+)
+
+function BrandPanel() {
+  return (
+    <div className="hidden lg:flex lg:w-5/12 bg-hudl-dark flex-col fixed top-0 left-0 h-screen p-10 overflow-y-auto">
+      {/* Logo */}
+      <div>{HUDL_LOGO}</div>
+
+      {/* Main copy */}
+      <div className="mt-12 flex-1">
+        <h1 className="text-3xl font-bold text-white leading-tight">
+          The best tech for teams.{' '}
+          <span className="text-hudl-orange">Built by the best team in tech.</span>
+        </h1>
+        <p className="mt-4 text-gray-400 text-sm leading-relaxed">
+          We build technology that helps more than 315,000 teams around the world
+          realize what they're capable of. We believe in the power and potential of sport.
+        </p>
+
+        {/* Stats */}
+        <div className="grid grid-cols-3 gap-3 mt-8">
+          {STATS.map(({ value, label }) => (
+            <div
+              key={label}
+              className="bg-white/5 border border-white/10 rounded-xl p-4 text-center"
+            >
+              <p className="text-2xl font-bold text-hudl-orange">{value}</p>
+              <p className="text-xs text-gray-400 mt-1 leading-tight">{label}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Benefits */}
+        <div className="mt-8 space-y-3">
+          <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+            Why Hudl
+          </p>
+          {BENEFITS.map(({ icon: Icon, text }) => (
+            <div key={text} className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-lg bg-hudl-orange/10 flex items-center justify-center shrink-0">
+                <Icon size={15} className="text-hudl-orange" />
+              </div>
+              <p className="text-sm text-gray-300">{text}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Office locations */}
+        <div className="mt-8">
+          <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
+            Our offices
+          </p>
+          <p className="text-xs text-gray-500 leading-relaxed">
+            Lincoln NE · Omaha NE · Lexington KY · London · Amsterdam ·
+            Milan · Sydney · Auckland · Tokyo · Mumbai · Beijing · Madrid
+          </p>
+        </div>
+      </div>
+
+      {/* Testimonial */}
+      <div className="mt-10 border-t border-white/10 pt-6">
+        <Quote size={20} className="text-hudl-orange mb-3" />
+        <p className="text-sm text-gray-300 italic leading-relaxed">
+          It's amazing to learn every day something new about colleagues' culture,
+          beliefs, experiences and lifestyle.
+        </p>
+        <p className="text-xs text-hudl-orange mt-3 font-medium">
+          Guilia Menini — Support Specialist
+        </p>
+      </div>
+    </div>
+  )
+}
 
 export function ApplicationPage() {
   const {
@@ -99,282 +196,280 @@ export function ApplicationPage() {
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-6">
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-10 max-w-md w-full text-center">
-          <div className="w-16 h-16 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-5">
-            <CheckCircle size={32} className="text-green-500" />
+      <div className="min-h-screen flex">
+        <BrandPanel />
+        <div className="lg:ml-[41.666667%] w-full lg:w-7/12 bg-gray-50 flex items-center justify-center p-10">
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-10 max-w-md w-full text-center">
+            <div className="w-16 h-16 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-5">
+              <CheckCircle size={32} className="text-green-500" />
+            </div>
+            <h2 className="text-xl font-bold text-hudl-dark mb-2">Application Received!</h2>
+            <p className="text-gray-500 text-sm mb-6">
+              Thank you for applying to Hudl. Our team will be in touch soon.
+            </p>
+            <Button onClick={() => setSubmitted(false)} variant="outline">
+              Submit another application
+            </Button>
           </div>
-          <h2 className="text-xl font-bold text-hudl-dark mb-2">Application Received!</h2>
-          <p className="text-gray-500 text-sm mb-6">
-            Thank you for applying to Hudl. Our team will be in touch soon.
-          </p>
-          <Button onClick={() => setSubmitted(false)} variant="outline">
-            Submit another application
-          </Button>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-hudl-dark border-b border-white/10 px-6 py-4">
-        <div className="max-w-2xl mx-auto flex items-center gap-4">
-          <svg viewBox="0 0 87.2 28.5" height="22" aria-label="Hudl">
-            <path fill="#ff6300" d="M14.5 4.6c-1.8-1.5-4-2.6-6.4-3q-.9.45-1.8 1.2h-.1C4.1 2.2 1.8 3.1.7 5c-1.2 2-.7 4.5.8 6v.1c-.1.6-.1 1.2-.1 1.8 0 3.5 1.4 6.6 3.7 9 .1.1.2 0 .2-.1-.5-1.4-.8-2.8-.8-4.4 0-1.8.4-3.4 1-4.9 0 0 0-.1.1-.1 1.4-.2 2.8-1 3.6-2.4.5-1 .6-2 .5-3v-.1c1.4-1 3-1.7 4.7-2.1.2 0 .2-.2.1-.2"/>
-            <path fill="#ff6300" d="M6.9 16.7c-.5 2.3-.3 4.8.6 7.1.6.4 1.3.7 1.9.9l.1.1c.5 2.1 2.4 3.7 4.7 3.7s4.2-1.6 4.7-3.7c0 0 0-.1.1-.1.5-.2 1.1-.5 1.6-.8 3-1.7 5.1-4.5 5.9-7.6 0-.1-.1-.2-.2-.1-.9 1.1-2.1 2.1-3.4 2.9-1.5.9-3.1 1.4-4.8 1.6H18c-.9-1.1-2.3-1.9-3.8-1.9-1.1 0-2 .3-2.8.9h-.1q-2.4-1.05-4.2-3c0-.1-.1-.1-.2 0"/>
-            <path fill="#ff6300" d="M21.2 17.2c2.2-.8 4.3-2.2 5.8-4.1 0-.7 0-1.4-.1-2.1v-.1c1.6-1.5 2-4 .8-5.9-1.1-2-3.5-2.8-5.6-2.2H22c-.5-.4-1-.7-1.5-1C17.5.1 14-.3 10.9.5c-.1 0-.1.2 0 .2q2.1.45 4.2 1.5c1.5.9 2.8 2 3.8 3.3v.1c-.5 1.3-.5 2.9.3 4.3.5.9 1.3 1.6 2.2 2 0 0 .1 0 .1.1.2 1.7 0 3.4-.5 5.1.1.1.1.1.2.1"/>
-            <path fill="white" d="M40.8 24.7v-9.6c0-1-.5-1.6-1.7-1.6-.4 0-.8.1-1.2.2v11h-5.5V2.6H38v7.2c.8-.3 1.7-.5 2.7-.5 3.7 0 5.6 1.9 5.6 5.2v10.2zm14.8.4c-4.7 0-7-1.7-7-5.9V9.5h5.5v9.7c0 1 .5 1.4 1.5 1.4.5 0 .9-.1 1.2-.1v-11h5.5v14.4c-1.5.7-4.2 1.2-6.7 1.2m16.9 0c-5.2 0-8-2.8-8-8 0-4.7 2.4-7.7 7.2-7.7.5 0 1.2.1 1.6.2v-7h5.5V24c-1.3.6-3.6 1.1-6.3 1.1m.8-11.5c-.2-.1-.6-.2-1-.2-1.5 0-2.3 1.4-2.3 3.6 0 2.6.8 3.8 2.4 3.8.4 0 .7 0 .9-.1zm8.3 11.1V2.6h5.5v22.1z"/>
-          </svg>
-          <div className="w-px h-6 bg-white/20" />
-          <p className="text-gray-400 text-sm">Careers</p>
-        </div>
-      </header>
+    <div className="min-h-screen flex">
+      {/* Left: Brand panel */}
+      <BrandPanel />
 
-      <div className="max-w-2xl mx-auto px-6 py-10">
-        <div className="mb-8">
-          <h1 className="text-2xl font-bold text-hudl-dark mb-2">Apply to Hudl</h1>
-          <p className="text-gray-500">
-            Join a world-class team building technology that helps coaches and athletes win.
-            Fields marked <span className="text-hudl-orange">*</span> are required.
-          </p>
-        </div>
+      {/* Right: Form */}
+      <div className="lg:ml-[41.666667%] w-full lg:w-7/12 bg-gray-50 min-h-screen">
+        {/* Mobile header */}
+        <header className="lg:hidden bg-hudl-dark px-6 py-4">
+          {HUDL_LOGO}
+        </header>
 
-        <form onSubmit={handleSubmit(onSubmit)} noValidate>
-          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+        <div className="max-w-xl mx-auto px-6 py-10">
+          <div className="mb-8">
+            <h2 className="text-2xl font-bold text-hudl-dark mb-2">Apply to Hudl</h2>
+            <p className="text-gray-500 text-sm">
+              Join a world-class team building technology that helps coaches and athletes win.
+              Fields marked <span className="text-hudl-orange">*</span> are required.
+            </p>
+          </div>
 
-            {/* Personal Information */}
-            <div className="px-6 pt-6 pb-4">
-              <h2 className="text-sm font-semibold text-hudl-orange uppercase tracking-wider mb-4">
-                Personal Information
-              </h2>
-              <div className="grid grid-cols-2 gap-4">
-                <Input
-                  label="First Name"
-                  required
-                  placeholder="Jane"
-                  error={errors.first_name?.message}
-                  {...register('first_name', { required: 'First name is required' })}
-                />
-                <Input
-                  label="Surname"
-                  required
-                  placeholder="Smith"
-                  error={errors.surname?.message}
-                  {...register('surname', { required: 'Surname is required' })}
-                />
-              </div>
-              <div className="mt-4">
-                <Input
-                  label="Email Address"
-                  type="email"
-                  required
-                  placeholder="jane.smith@example.com"
-                  error={errors.email?.message}
-                  {...register('email', {
-                    required: 'Email is required',
-                    pattern: {
-                      value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                      message: 'Please enter a valid email',
-                    },
-                  })}
-                />
-              </div>
-              <div className="mt-4 flex gap-3">
-                <div className="w-44 shrink-0">
-                  <Select
-                    label="Country Code"
-                    required
-                    error={errors.phone_country_code?.message}
-                    {...register('phone_country_code', { required: 'Required' })}
-                  >
-                    <option value="">Select…</option>
-                    {PHONE_CODES.map(({ code, label }) => (
-                      <option key={code} value={code}>{label}</option>
-                    ))}
-                  </Select>
-                </div>
-                <div className="flex-1">
+          <form onSubmit={handleSubmit(onSubmit)} noValidate>
+            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+
+              {/* Personal Information */}
+              <div className="px-6 pt-6 pb-4">
+                <h2 className="text-sm font-semibold text-hudl-orange uppercase tracking-wider mb-4">
+                  Personal Information
+                </h2>
+                <div className="grid grid-cols-2 gap-4">
                   <Input
-                    label="Phone Number"
-                    type="tel"
+                    label="First Name"
                     required
-                    placeholder="7700 900123"
-                    error={errors.phone_number?.message}
-                    {...register('phone_number', {
-                      required: 'Phone number is required',
+                    placeholder="Jane"
+                    error={errors.first_name?.message}
+                    {...register('first_name', { required: 'First name is required' })}
+                  />
+                  <Input
+                    label="Surname"
+                    required
+                    placeholder="Smith"
+                    error={errors.surname?.message}
+                    {...register('surname', { required: 'Surname is required' })}
+                  />
+                </div>
+                <div className="mt-4">
+                  <Input
+                    label="Email Address"
+                    type="email"
+                    required
+                    placeholder="jane.smith@example.com"
+                    error={errors.email?.message}
+                    {...register('email', {
+                      required: 'Email is required',
                       pattern: {
-                        value: /^[\d\s\-().]+$/,
-                        message: 'Please enter a valid phone number',
+                        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                        message: 'Please enter a valid email',
                       },
                     })}
                   />
                 </div>
-              </div>
-            </div>
-
-            <div className="border-t border-gray-50" />
-
-            {/* Address */}
-            <div className="px-6 py-4">
-              <h2 className="text-sm font-semibold text-hudl-orange uppercase tracking-wider mb-4">
-                Address
-              </h2>
-              <Input
-                label="Address Line 1"
-                required
-                placeholder="123 Main Street"
-                error={errors.address_line1?.message}
-                {...register('address_line1', { required: 'Address is required' })}
-              />
-              <div className="grid grid-cols-2 gap-4 mt-4">
-                <Input
-                  label="City"
-                  required
-                  placeholder="London"
-                  error={errors.city?.message}
-                  {...register('city', { required: 'City is required' })}
-                />
-                <Input
-                  label="Postcode / ZIP"
-                  required
-                  placeholder="SW1A 1AA"
-                  error={errors.postcode?.message}
-                  {...register('postcode', { required: 'Postcode is required' })}
-                />
-              </div>
-              <div className="grid grid-cols-2 gap-4 mt-4">
-                <Input
-                  label="State / County / Region"
-                  required
-                  placeholder="Greater London"
-                  error={errors.state_region?.message}
-                  {...register('state_region', { required: 'State / region is required' })}
-                />
-                <Input
-                  label="Country"
-                  required
-                  placeholder="United Kingdom"
-                  error={errors.country?.message}
-                  {...register('country', { required: 'Country is required' })}
-                />
-              </div>
-            </div>
-
-            <div className="border-t border-gray-50" />
-
-            {/* Background */}
-            <div className="px-6 py-4">
-              <h2 className="text-sm font-semibold text-hudl-orange uppercase tracking-wider mb-4">
-                Background
-              </h2>
-              <div className="grid grid-cols-2 gap-4">
-                <Select
-                  label="Education Level"
-                  required
-                  error={errors.education_level?.message}
-                  {...register('education_level', { required: 'Education level is required' })}
-                >
-                  <option value="">Select level…</option>
-                  {EDUCATION_LEVELS.map((level) => (
-                    <option key={level} value={level}>{level}</option>
-                  ))}
-                </Select>
-                <Input
-                  label="Referred By"
-                  placeholder="e.g. John Doe"
-                  hint="Leave blank if not referred"
-                  {...register('referred_by')}
-                />
-              </div>
-            </div>
-
-            <div className="border-t border-gray-50" />
-
-            {/* Links & Documents */}
-            <div className="px-6 py-4">
-              <h2 className="text-sm font-semibold text-hudl-orange uppercase tracking-wider mb-4">
-                Links &amp; Documents
-              </h2>
-              <Input
-                label="LinkedIn Profile URL"
-                type="url"
-                required
-                placeholder="https://linkedin.com/in/yourprofile"
-                error={errors.linkedin_url?.message}
-                {...register('linkedin_url', {
-                  required: 'LinkedIn URL is required',
-                  pattern: {
-                    value: /^https?:\/\/(www\.)?linkedin\.com\/.+/i,
-                    message: 'Please enter a valid LinkedIn URL',
-                  },
-                })}
-              />
-
-              {/* CV Upload */}
-              <div className="mt-4">
-                <label className="text-sm font-medium text-gray-700 block mb-1">
-                  CV / Résumé <span className="text-hudl-orange">*</span>
-                </label>
-                {cvFile ? (
-                  <div className="flex items-center gap-3 border border-gray-200 rounded-lg px-4 py-3 bg-hudl-orange-light">
-                    <div className="w-8 h-8 bg-hudl-orange/10 rounded flex items-center justify-center shrink-0">
-                      <Upload size={14} className="text-hudl-orange" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-gray-900 truncate">{cvFile.name}</p>
-                      <p className="text-xs text-gray-500">{(cvFile.size / 1024).toFixed(1)} KB</p>
-                    </div>
-                    <button type="button" onClick={removeFile} className="text-gray-400 hover:text-gray-600">
-                      <X size={16} />
-                    </button>
+                <div className="mt-4 flex gap-3">
+                  <div className="w-44 shrink-0">
+                    <Select
+                      label="Country Code"
+                      required
+                      error={errors.phone_country_code?.message}
+                      {...register('phone_country_code', { required: 'Required' })}
+                    >
+                      <option value="">Select…</option>
+                      {PHONE_CODES.map(({ code, label }) => (
+                        <option key={code} value={code}>{label}</option>
+                      ))}
+                    </Select>
                   </div>
-                ) : (
-                  <label className={`flex flex-col items-center justify-center gap-2 border-2 border-dashed rounded-xl px-4 py-8 cursor-pointer transition-colors ${
-                    cvError ? 'border-red-400 bg-red-50' : 'border-gray-200 hover:border-hudl-orange hover:bg-hudl-orange-light/50'
-                  }`}>
-                    <Upload size={22} className={cvError ? 'text-red-400' : 'text-gray-400'} />
-                    <div className="text-center">
-                      <p className="text-sm text-gray-600">
-                        <span className="font-semibold text-hudl-orange">Click to upload</span>{' '}
-                        or drag and drop
-                      </p>
-                      <p className="text-xs text-gray-400 mt-0.5">PDF, DOC, DOCX up to 10MB</p>
-                    </div>
-                    <input
-                      ref={fileInputRef}
-                      type="file"
-                      accept=".pdf,.doc,.docx"
-                      onChange={onFileChange}
-                      className="sr-only"
+                  <div className="flex-1">
+                    <Input
+                      label="Phone Number"
+                      type="tel"
+                      required
+                      placeholder="7700 900123"
+                      error={errors.phone_number?.message}
+                      {...register('phone_number', {
+                        required: 'Phone number is required',
+                        pattern: {
+                          value: /^[\d\s\-().]+$/,
+                          message: 'Please enter a valid phone number',
+                        },
+                      })}
                     />
+                  </div>
+                </div>
+              </div>
+
+              <div className="border-t border-gray-50" />
+
+              {/* Address */}
+              <div className="px-6 py-4">
+                <h2 className="text-sm font-semibold text-hudl-orange uppercase tracking-wider mb-4">
+                  Address
+                </h2>
+                <Input
+                  label="Address Line 1"
+                  required
+                  placeholder="123 Main Street"
+                  error={errors.address_line1?.message}
+                  {...register('address_line1', { required: 'Address is required' })}
+                />
+                <div className="grid grid-cols-2 gap-4 mt-4">
+                  <Input
+                    label="City"
+                    required
+                    placeholder="London"
+                    error={errors.city?.message}
+                    {...register('city', { required: 'City is required' })}
+                  />
+                  <Input
+                    label="Postcode / ZIP"
+                    required
+                    placeholder="SW1A 1AA"
+                    error={errors.postcode?.message}
+                    {...register('postcode', { required: 'Postcode is required' })}
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-4 mt-4">
+                  <Input
+                    label="State / County / Region"
+                    required
+                    placeholder="Greater London"
+                    error={errors.state_region?.message}
+                    {...register('state_region', { required: 'State / region is required' })}
+                  />
+                  <Input
+                    label="Country"
+                    required
+                    placeholder="United Kingdom"
+                    error={errors.country?.message}
+                    {...register('country', { required: 'Country is required' })}
+                  />
+                </div>
+              </div>
+
+              <div className="border-t border-gray-50" />
+
+              {/* Background */}
+              <div className="px-6 py-4">
+                <h2 className="text-sm font-semibold text-hudl-orange uppercase tracking-wider mb-4">
+                  Background
+                </h2>
+                <div className="grid grid-cols-2 gap-4">
+                  <Select
+                    label="Education Level"
+                    required
+                    error={errors.education_level?.message}
+                    {...register('education_level', { required: 'Education level is required' })}
+                  >
+                    <option value="">Select level…</option>
+                    {EDUCATION_LEVELS.map((level) => (
+                      <option key={level} value={level}>{level}</option>
+                    ))}
+                  </Select>
+                  <Input
+                    label="Referred By"
+                    placeholder="e.g. John Doe"
+                    hint="Leave blank if not referred"
+                    {...register('referred_by')}
+                  />
+                </div>
+              </div>
+
+              <div className="border-t border-gray-50" />
+
+              {/* Links & Documents */}
+              <div className="px-6 py-4">
+                <h2 className="text-sm font-semibold text-hudl-orange uppercase tracking-wider mb-4">
+                  Links &amp; Documents
+                </h2>
+                <Input
+                  label="LinkedIn Profile URL"
+                  type="url"
+                  required
+                  placeholder="https://linkedin.com/in/yourprofile"
+                  error={errors.linkedin_url?.message}
+                  {...register('linkedin_url', {
+                    required: 'LinkedIn URL is required',
+                    pattern: {
+                      value: /^https?:\/\/(www\.)?linkedin\.com\/.+/i,
+                      message: 'Please enter a valid LinkedIn URL',
+                    },
+                  })}
+                />
+                <div className="mt-4">
+                  <label className="text-sm font-medium text-gray-700 block mb-1">
+                    CV / Résumé <span className="text-hudl-orange">*</span>
                   </label>
+                  {cvFile ? (
+                    <div className="flex items-center gap-3 border border-gray-200 rounded-lg px-4 py-3 bg-hudl-orange-light">
+                      <div className="w-8 h-8 bg-hudl-orange/10 rounded flex items-center justify-center shrink-0">
+                        <Upload size={14} className="text-hudl-orange" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium text-gray-900 truncate">{cvFile.name}</p>
+                        <p className="text-xs text-gray-500">{(cvFile.size / 1024).toFixed(1)} KB</p>
+                      </div>
+                      <button type="button" onClick={removeFile} className="text-gray-400 hover:text-gray-600">
+                        <X size={16} />
+                      </button>
+                    </div>
+                  ) : (
+                    <label className={`flex flex-col items-center justify-center gap-2 border-2 border-dashed rounded-xl px-4 py-8 cursor-pointer transition-colors ${
+                      cvError ? 'border-red-400 bg-red-50' : 'border-gray-200 hover:border-hudl-orange hover:bg-hudl-orange-light/50'
+                    }`}>
+                      <Upload size={22} className={cvError ? 'text-red-400' : 'text-gray-400'} />
+                      <div className="text-center">
+                        <p className="text-sm text-gray-600">
+                          <span className="font-semibold text-hudl-orange">Click to upload</span>{' '}
+                          or drag and drop
+                        </p>
+                        <p className="text-xs text-gray-400 mt-0.5">PDF, DOC, DOCX up to 10MB</p>
+                      </div>
+                      <input
+                        ref={fileInputRef}
+                        type="file"
+                        accept=".pdf,.doc,.docx"
+                        onChange={onFileChange}
+                        className="sr-only"
+                      />
+                    </label>
+                  )}
+                  {cvError && <p className="text-xs text-red-500 mt-1">{cvError}</p>}
+                </div>
+              </div>
+
+              {/* Submit */}
+              <div className="px-6 py-5 bg-gray-50 border-t border-gray-100">
+                {submitError && (
+                  <div className="mb-4 px-4 py-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-600">
+                    {submitError}
+                  </div>
                 )}
-                {cvError && <p className="text-xs text-red-500 mt-1">{cvError}</p>}
+                <Button type="submit" size="lg" disabled={submitting} className="w-full">
+                  {submitting ? (
+                    <><Loader2 size={16} className="animate-spin" />Submitting…</>
+                  ) : (
+                    'Submit Application'
+                  )}
+                </Button>
+                <p className="text-xs text-gray-400 text-center mt-3">
+                  By submitting, you agree that Hudl may store and process your data for recruitment purposes.
+                </p>
               </div>
             </div>
-
-            {/* Submit */}
-            <div className="px-6 py-5 bg-gray-50 border-t border-gray-100">
-              {submitError && (
-                <div className="mb-4 px-4 py-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-600">
-                  {submitError}
-                </div>
-              )}
-              <Button type="submit" size="lg" disabled={submitting} className="w-full">
-                {submitting ? (
-                  <><Loader2 size={16} className="animate-spin" />Submitting…</>
-                ) : (
-                  'Submit Application'
-                )}
-              </Button>
-              <p className="text-xs text-gray-400 text-center mt-3">
-                By submitting, you agree that Hudl may store and process your data for recruitment purposes.
-              </p>
-            </div>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     </div>
   )
