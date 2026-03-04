@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react'
 import { useForm } from 'react-hook-form'
-import { CheckCircle, Upload, X, Loader2, Users, Ear, MessageSquare, Crosshair, Trophy } from 'lucide-react'
+import { CheckCircle, Upload, X, Loader2 } from 'lucide-react'
 import { Input, Select } from '../components/ui/Input'
 import { Button } from '../components/ui/Button'
 import { useCandidates } from '../hooks/useCandidates'
@@ -73,63 +73,28 @@ function HudlMark({ size = 120, opacity = 0.12 }) {
 }
 
 const CORE_VALUES = [
-  { icon: Trophy,       title: 'Play to Win',             desc: 'We compete hard, set bold goals, and push ourselves to be the best.' },
-  { icon: Users,        title: 'Win Together',            desc: 'We succeed as a team — supporting each other and our customers.' },
-  { icon: Ear,          title: 'We Listen',               desc: 'We seek to understand before we speak, and act on what we hear.' },
-  { icon: MessageSquare,title: 'Respectfully Blunt',      desc: 'We give honest, direct feedback with care and good intent.' },
-  { icon: Crosshair,    title: 'Thrive on the Front Lines',desc: 'We stay close to our customers and solve real problems for real people.' },
+  'Play to Win',
+  'Win Together',
+  'We Listen',
+  'Respectfully Blunt',
+  'Thrive on the Front Lines',
 ]
 
 function LeftPanel() {
   return (
     <div
-      className="hidden xl:flex xl:w-72 2xl:w-80 flex-col shrink-0 bg-hudl-dark sticky top-0 h-screen overflow-hidden"
+      className="hidden xl:flex xl:w-64 2xl:w-72 shrink-0 bg-hudl-dark sticky top-0 h-screen overflow-hidden items-center justify-center"
       aria-hidden="true"
     >
-      <div className="absolute top-[-30px] -left-8">
-        <HudlMark size={260} opacity={0.07} />
+      {/* Giant ghosted swirl mark */}
+      <div className="absolute inset-0 flex items-center justify-center">
+        <HudlMark size={340} opacity={0.06} />
       </div>
-      <div className="absolute bottom-[-40px] -right-10">
-        <HudlMark size={220} opacity={0.05} />
-      </div>
-      <div className="absolute top-0 right-0 w-[3px] h-full bg-gradient-to-b from-transparent via-hudl-orange to-transparent opacity-40" />
-
-      <div className="relative z-10 flex flex-col h-full p-8 justify-between">
-        <div>
-          <HudlMark size={48} opacity={1} />
-          <p className="mt-4 text-sm font-semibold text-white leading-snug">
-            We help teams{' '}
-            <span className="text-hudl-orange">realise what they're capable of.</span>
-          </p>
-          <p className="mt-2 text-xs text-gray-500 leading-relaxed">
-            315,000+ teams across 40+ sports use Hudl to capture, analyse, and share their performance.
-          </p>
-        </div>
-
-        <div className="space-y-3">
-          {[
-            { value: '315K+', label: 'Teams worldwide' },
-            { value: '40+',   label: 'Sports covered' },
-            { value: '12',    label: 'Global offices' },
-          ].map(({ value, label }) => (
-            <div
-              key={label}
-              className="flex items-center gap-3 bg-white/5 border border-white/10 rounded-xl px-4 py-3"
-            >
-              <span className="text-lg font-bold text-hudl-orange">{value}</span>
-              <span className="text-xs text-gray-400">{label}</span>
-            </div>
-          ))}
-        </div>
-
-        <div className="border-t border-white/10 pt-5">
-          <p className="text-xs text-gray-400 italic leading-relaxed">
-            "It's amazing to learn every day something new about colleagues' culture, beliefs, and experiences."
-          </p>
-          <p className="text-xs text-hudl-orange mt-2 font-medium">
-            Guilia Menini — Support Specialist
-          </p>
-        </div>
+      {/* Orange accent — right edge */}
+      <div className="absolute top-0 right-0 w-px h-full bg-gradient-to-b from-transparent via-hudl-orange to-transparent opacity-30" />
+      {/* Logo mark — bottom left */}
+      <div className="absolute bottom-8 left-8">
+        <HudlMark size={32} opacity={0.5} />
       </div>
     </div>
   )
@@ -138,46 +103,31 @@ function LeftPanel() {
 function RightPanel() {
   return (
     <div
-      className="hidden xl:flex xl:w-72 2xl:w-80 flex-col shrink-0 bg-hudl-dark sticky top-0 h-screen overflow-hidden"
+      className="hidden xl:flex xl:w-64 2xl:w-72 shrink-0 bg-hudl-dark sticky top-0 h-screen overflow-hidden flex-col justify-center px-10"
       aria-hidden="true"
     >
-      <div className="absolute bottom-[-30px] -right-8">
-        <HudlMark size={260} opacity={0.07} />
+      {/* Giant ghosted swirl mark */}
+      <div className="absolute inset-0 flex items-center justify-center">
+        <HudlMark size={340} opacity={0.06} />
       </div>
-      <div className="absolute top-[-40px] -left-10">
-        <HudlMark size={220} opacity={0.05} />
-      </div>
-      <div className="absolute top-0 left-0 w-[3px] h-full bg-gradient-to-b from-transparent via-hudl-orange to-transparent opacity-40" />
+      {/* Orange accent — left edge */}
+      <div className="absolute top-0 left-0 w-px h-full bg-gradient-to-b from-transparent via-hudl-orange to-transparent opacity-30" />
 
-      <div className="relative z-10 flex flex-col h-full p-8 justify-between">
-        <div>
-          <p className="text-xs font-semibold text-hudl-orange uppercase tracking-wider mb-1">
-            Our Values
-          </p>
-          <p className="text-sm font-bold text-white leading-snug">
-            The principles that guide how we work.
-          </p>
-        </div>
-
-        <div className="space-y-4">
-          {CORE_VALUES.map(({ icon: Icon, title, desc }) => (
-            <div key={title} className="flex gap-3">
-              <div className="w-8 h-8 rounded-lg bg-hudl-orange/10 border border-hudl-orange/20 flex items-center justify-center shrink-0 mt-0.5">
-                <Icon size={14} className="text-hudl-orange" />
-              </div>
-              <div>
-                <p className="text-xs font-semibold text-white">{title}</p>
-                <p className="text-xs text-gray-500 leading-relaxed mt-0.5">{desc}</p>
-              </div>
-            </div>
+      {/* Values list */}
+      <div className="relative z-10">
+        <p className="text-[10px] font-semibold text-hudl-orange uppercase tracking-widest mb-6">
+          Our Values
+        </p>
+        <ul className="space-y-0">
+          {CORE_VALUES.map((value, i) => (
+            <li key={value}>
+              <p className="text-sm font-medium text-white/80 py-3 leading-snug">{value}</p>
+              {i < CORE_VALUES.length - 1 && (
+                <div className="h-px bg-white/5" />
+              )}
+            </li>
           ))}
-        </div>
-
-        <div className="border-t border-white/10 pt-5">
-          <p className="text-xs text-gray-500 leading-relaxed">
-            Every Hudlr is recognised each quarter for living these values — they're more than words.
-          </p>
-        </div>
+        </ul>
       </div>
     </div>
   )
