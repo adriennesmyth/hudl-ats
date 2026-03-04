@@ -228,19 +228,22 @@ export function ApplicationPage() {
       {/* Centre: form */}
       <div className="flex-1 bg-gray-50 min-h-screen">
         {/* Header */}
-        <header className="bg-hudl-dark border-b border-white/10 px-6 py-4">
-          <div className="max-w-2xl mx-auto flex items-center gap-4">
-            {HUDL_LOGO}
-            <div className="w-px h-8 bg-white/20" />
-            <p className="text-white text-xl font-semibold tracking-tight">Careers</p>
+        <header className="bg-hudl-dark px-6 pt-10 pb-8 border-b border-white/10">
+          <div className="max-w-2xl mx-auto">
+            <div className="mb-4">{HUDL_LOGO}</div>
+            <h1 className="text-4xl font-bold text-white tracking-tight leading-tight">
+              Hudl <span className="text-hudl-orange">Careers</span>
+            </h1>
+            <p className="mt-2 text-gray-400 text-sm">
+              Join a world-class team helping coaches and athletes realise their potential.
+            </p>
           </div>
         </header>
 
         <div className="max-w-2xl mx-auto px-6 py-10">
           <div className="mb-8">
-            <h1 className="text-2xl font-bold text-hudl-dark mb-2">Apply to Hudl</h1>
-            <p className="text-gray-500">
-              Join a world-class team building technology that helps coaches and athletes win.
+            <h2 className="text-xl font-bold text-hudl-dark mb-1">Apply now</h2>
+            <p className="text-gray-500 text-sm">
               Fields marked <span className="text-hudl-orange">*</span> are required.
             </p>
           </div>
