@@ -72,13 +72,6 @@ function HudlMark({ size = 120, opacity = 0.12 }) {
   )
 }
 
-const CORE_VALUES = [
-  'Play to Win',
-  'Win Together',
-  'We Listen',
-  'Respectfully Blunt',
-  'Thrive on the Front Lines',
-]
 
 function LeftPanel() {
   return (
@@ -112,27 +105,6 @@ function RightPanel() {
       {/* Orange accent — left edge */}
       <div className="absolute top-0 left-0 w-px h-full bg-gradient-to-b from-transparent via-hudl-orange to-transparent opacity-30" />
 
-      {/* Values list */}
-      <div className="relative z-10">
-        <a
-          href="https://www.hudl.com/en_gb/about"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-block text-sm font-semibold text-hudl-orange uppercase tracking-widest mb-6 hover:text-hudl-orange-hover underline underline-offset-2 decoration-hudl-orange/40 transition-colors"
-        >
-          Our Values ↗
-        </a>
-        <ul className="space-y-0">
-          {CORE_VALUES.map((value, i) => (
-            <li key={value}>
-              <p className="text-sm font-medium text-white/80 py-3 leading-snug">{value}</p>
-              {i < CORE_VALUES.length - 1 && (
-                <div className="h-px bg-white/5" />
-              )}
-            </li>
-          ))}
-        </ul>
-      </div>
     </div>
   )
 }
