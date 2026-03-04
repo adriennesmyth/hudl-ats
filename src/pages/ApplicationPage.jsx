@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react'
 import { useForm } from 'react-hook-form'
-import { CheckCircle, Upload, X, Loader2 } from 'lucide-react'
+import { CheckCircle, Upload, X, Loader2, Users, Ear, MessageSquare, Crosshair, Trophy } from 'lucide-react'
 import { Input, Select } from '../components/ui/Input'
 import { Button } from '../components/ui/Button'
 import { useCandidates } from '../hooks/useCandidates'
@@ -72,31 +72,29 @@ function HudlMark({ size = 120, opacity = 0.12 }) {
   )
 }
 
-// Decorative side panel — replace backgroundImage value with a real Hudl/sports photo URL if available
-function SidePanel({ side = 'left' }) {
+const CORE_VALUES = [
+  { icon: Trophy,       title: 'Play to Win',             desc: 'We compete hard, set bold goals, and push ourselves to be the best.' },
+  { icon: Users,        title: 'Win Together',            desc: 'We succeed as a team — supporting each other and our customers.' },
+  { icon: Ear,          title: 'We Listen',               desc: 'We seek to understand before we speak, and act on what we hear.' },
+  { icon: MessageSquare,title: 'Respectfully Blunt',      desc: 'We give honest, direct feedback with care and good intent.' },
+  { icon: Crosshair,    title: 'Thrive on the Front Lines',desc: 'We stay close to our customers and solve real problems for real people.' },
+]
+
+function LeftPanel() {
   return (
     <div
       className="hidden xl:flex xl:w-72 2xl:w-80 flex-col shrink-0 bg-hudl-dark sticky top-0 h-screen overflow-hidden"
       aria-hidden="true"
     >
-      {/* Large decorative mark — top */}
-      <div className={`absolute top-[-30px] ${side === 'left' ? '-left-8' : '-right-8'}`}>
+      <div className="absolute top-[-30px] -left-8">
         <HudlMark size={260} opacity={0.07} />
       </div>
-
-      {/* Large decorative mark — bottom */}
-      <div className={`absolute bottom-[-40px] ${side === 'left' ? '-right-10' : '-left-10'}`}>
+      <div className="absolute bottom-[-40px] -right-10">
         <HudlMark size={220} opacity={0.05} />
       </div>
+      <div className="absolute top-0 right-0 w-[3px] h-full bg-gradient-to-b from-transparent via-hudl-orange to-transparent opacity-40" />
 
-      {/* Vertical orange accent line */}
-      <div
-        className={`absolute top-0 ${side === 'left' ? 'right-0' : 'left-0'} w-[3px] h-full bg-gradient-to-b from-transparent via-hudl-orange to-transparent opacity-40`}
-      />
-
-      {/* Content */}
       <div className="relative z-10 flex flex-col h-full p-8 justify-between">
-        {/* Top: logo mark + tagline */}
         <div>
           <HudlMark size={48} opacity={1} />
           <p className="mt-4 text-sm font-semibold text-white leading-snug">
@@ -108,7 +106,6 @@ function SidePanel({ side = 'left' }) {
           </p>
         </div>
 
-        {/* Middle: stat pills */}
         <div className="space-y-3">
           {[
             { value: '315K+', label: 'Teams worldwide' },
@@ -125,13 +122,60 @@ function SidePanel({ side = 'left' }) {
           ))}
         </div>
 
-        {/* Bottom: quote */}
         <div className="border-t border-white/10 pt-5">
           <p className="text-xs text-gray-400 italic leading-relaxed">
             "It's amazing to learn every day something new about colleagues' culture, beliefs, and experiences."
           </p>
           <p className="text-xs text-hudl-orange mt-2 font-medium">
             Guilia Menini — Support Specialist
+          </p>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function RightPanel() {
+  return (
+    <div
+      className="hidden xl:flex xl:w-72 2xl:w-80 flex-col shrink-0 bg-hudl-dark sticky top-0 h-screen overflow-hidden"
+      aria-hidden="true"
+    >
+      <div className="absolute bottom-[-30px] -right-8">
+        <HudlMark size={260} opacity={0.07} />
+      </div>
+      <div className="absolute top-[-40px] -left-10">
+        <HudlMark size={220} opacity={0.05} />
+      </div>
+      <div className="absolute top-0 left-0 w-[3px] h-full bg-gradient-to-b from-transparent via-hudl-orange to-transparent opacity-40" />
+
+      <div className="relative z-10 flex flex-col h-full p-8 justify-between">
+        <div>
+          <p className="text-xs font-semibold text-hudl-orange uppercase tracking-wider mb-1">
+            Our Values
+          </p>
+          <p className="text-sm font-bold text-white leading-snug">
+            The principles that guide how we work.
+          </p>
+        </div>
+
+        <div className="space-y-4">
+          {CORE_VALUES.map(({ icon: Icon, title, desc }) => (
+            <div key={title} className="flex gap-3">
+              <div className="w-8 h-8 rounded-lg bg-hudl-orange/10 border border-hudl-orange/20 flex items-center justify-center shrink-0 mt-0.5">
+                <Icon size={14} className="text-hudl-orange" />
+              </div>
+              <div>
+                <p className="text-xs font-semibold text-white">{title}</p>
+                <p className="text-xs text-gray-500 leading-relaxed mt-0.5">{desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="border-t border-white/10 pt-5">
+          <p className="text-xs text-gray-500 leading-relaxed">
+            Every Hudlr is recognised each quarter for living these values — they're more than words.
           </p>
         </div>
       </div>
@@ -217,7 +261,7 @@ export function ApplicationPage() {
             </Button>
           </div>
         </div>
-        <SidePanel side="right" />
+        <RightPanel />
       </div>
     )
   }
@@ -225,7 +269,7 @@ export function ApplicationPage() {
   return (
     <div className="min-h-screen flex">
       {/* Left decorative panel */}
-      <SidePanel side="left" />
+      <LeftPanel />
 
       {/* Centre: form */}
       <div className="flex-1 bg-gray-50 min-h-screen">
@@ -485,7 +529,7 @@ export function ApplicationPage() {
       </div>
 
       {/* Right decorative panel */}
-      <SidePanel side="right" />
+      <RightPanel />
     </div>
   )
 }
