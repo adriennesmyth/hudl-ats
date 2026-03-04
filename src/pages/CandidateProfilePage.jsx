@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
+import { useRef } from 'react'
 import {
   ArrowLeft,
   Mail,
@@ -19,6 +20,7 @@ import {
   MinusCircle,
   Phone,
   Building2,
+  Upload,
 } from 'lucide-react'
 import { Button } from '../components/ui/Button'
 import { Badge, RecommendationBadge } from '../components/ui/Badge'
@@ -78,7 +80,10 @@ const HM_DECISION_MAP = {
 export function CandidateProfilePage() {
   const { id } = useParams()
   const navigate = useNavigate()
-  const { fetchCandidate, updateCandidateStage } = useCandidates()
+  const { fetchCandidate, updateCandidateStage, uploadCv } = useCandidates()
+  const cvInputRef = useRef(null)
+  const [uploadingCv, setUploadingCv] = useState(false)
+  const [cvError, setCvError] = useState(null)
   const { stages, fetchStages } = useStages()
   const { scorecards, fetchScorecards } = useScorecards()
   const { history, fetchHistory } = useStageHistory()
@@ -108,6 +113,22 @@ export function CandidateProfilePage() {
     }
     load()
   }, [id, fetchCandidate, fetchStages, fetchScorecards, fetchHistory])
+
+  const handleCvUpload = async (e) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    setUploadingCv(true)
+    setCvError(null)
+    try {
+      const url = await uploadCv(id, file)
+      setCandidate((prev) => ({ ...prev, cv_url: url }))
+    } catch (err) {
+      setCvError(err.message)
+    } finally {
+      setUploadingCv(false)
+      e.target.value = ''
+    }
+  }
 
   const handleMoveStage = async () => {
     if (!selectedStageId || selectedStageId === candidate?.current_stage_id) return
@@ -218,9 +239,46 @@ export function CandidateProfilePage() {
               value={candidate.linkedin_url ? 'View Profile' : null}
               href={candidate.linkedin_url}
             />
-            {candidate.cv_url && (
-              <InfoRow icon={FileText} label="CV" value="Download CV" href={candidate.cv_url} />
-            )}
+            <div className="flex items-start gap-3 py-2.5 border-b border-gray-50 last:border-0">
+              <FileText size={15} className="text-gray-400 mt-0.5 shrink-0" />
+              <div className="flex-1 min-w-0">
+                <p className="text-xs text-gray-400 mb-0.5">CV</p>
+                {candidate.cv_url ? (
+                  <a
+                    href={candidate.cv_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm font-medium text-hudl-orange hover:underline flex items-center gap-1"
+                  >
+                    Download CV
+                    <ExternalLink size={11} />
+                  </a>
+                ) : (
+                  <>
+                    <button
+                      onClick={() => cvInputRef.current?.click()}
+                      disabled={uploadingCv}
+                      className="text-sm font-medium text-gray-400 hover:text-hudl-orange flex items-center gap-1 transition-colors disabled:opacity-50"
+                    >
+                      {uploadingCv ? (
+                        <Loader2 size={13} className="animate-spin" />
+                      ) : (
+                        <Upload size={13} />
+                      )}
+                      {uploadingCv ? 'Uploading…' : 'Upload CV'}
+                    </button>
+                    {cvError && <p className="text-xs text-red-500 mt-0.5">{cvError}</p>}
+                  </>
+                )}
+              </div>
+            </div>
+            <input
+              ref={cvInputRef}
+              type="file"
+              accept=".pdf,.doc,.docx"
+              onChange={handleCvUpload}
+              className="sr-only"
+            />
           </div>
 
           {/* Move stage */}

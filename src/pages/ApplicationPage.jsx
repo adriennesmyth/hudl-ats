@@ -204,13 +204,13 @@ export function ApplicationPage() {
           <div className="max-w-2xl mx-auto flex items-center gap-4">
             {HUDL_LOGO}
             <div className="w-px h-8 bg-white/20" />
-            <p className="text-white text-xl font-semibold tracking-tight">Careers</p>
+            <p className="text-white text-xl font-semibold tracking-tight">Careers India</p>
           </div>
         </header>
 
         <div className="max-w-2xl mx-auto px-6 py-10">
           <div className="mb-8">
-            <h1 className="text-2xl font-bold text-hudl-dark mb-2">Apply to Hudl</h1>
+            <h1 className="text-2xl font-bold text-hudl-dark mb-2">Apply to Hudl Careers India</h1>
             <p className="text-gray-500">
               Join a world-class team building technology that helps coaches and athletes win.
               Fields marked <span className="text-hudl-orange">*</span> are required.
@@ -446,7 +446,7 @@ export function ApplicationPage() {
                   )}
                 </Button>
                 <p className="text-xs text-gray-400 text-center mt-3">
-                  By submitting, you agree that Hudl may store and process your data for recruitment purposes.
+                  By submitting, you agree that Hudl India may store and process your data for recruitment purposes.
                 </p>
               </div>
             </div>

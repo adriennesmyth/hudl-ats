@@ -1,6 +1,6 @@
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { KanbanBoard } from '../components/kanban/KanbanBoard'
-import { Users, Plus, TrendingUp, Calendar, GitBranch } from 'lucide-react'
+import { Users, Plus, TrendingUp, Calendar, GitBranch, Search, X } from 'lucide-react'
 import { Button } from '../components/ui/Button'
 import { useStages } from '../hooks/useStages'
 import { useCandidates } from '../hooks/useCandidates'
@@ -25,11 +25,23 @@ function StatCard({ label, value, icon: Icon, accent }) {
 export function DashboardPage() {
   const { stages, fetchStages } = useStages()
   const { candidates, fetchCandidates, updateCandidateStage } = useCandidates()
+  const [query, setQuery] = useState('')
 
   useEffect(() => {
     fetchStages()
     fetchCandidates()
   }, [fetchStages, fetchCandidates])
+
+  const filteredCandidates = useMemo(() => {
+    const q = query.trim().toLowerCase()
+    if (!q) return candidates
+    return candidates.filter((c) => {
+      const firstName = (c.first_name ?? '').toLowerCase()
+      const surname = (c.surname ?? '').toLowerCase()
+      const email = (c.email ?? '').toLowerCase()
+      return firstName.includes(q) || surname.includes(q) || email.includes(q)
+    })
+  }, [candidates, query])
 
   const stats = useMemo(() => {
     const total = candidates.length
@@ -93,10 +105,30 @@ export function DashboardPage() {
         />
       </div>
 
+      {/* Search */}
+      <div className="relative mb-4 max-w-sm">
+        <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+        <input
+          type="text"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Search by name or email…"
+          className="w-full pl-9 pr-8 py-2 text-sm border border-gray-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-hudl-orange/40 focus:border-hudl-orange"
+        />
+        {query && (
+          <button
+            onClick={() => setQuery('')}
+            className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+          >
+            <X size={14} />
+          </button>
+        )}
+      </div>
+
       {/* Kanban */}
       <KanbanBoard
         stages={stages}
-        candidates={candidates}
+        candidates={filteredCandidates}
         updateCandidateStage={updateCandidateStage}
         refetchCandidates={fetchCandidates}
       />

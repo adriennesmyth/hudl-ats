@@ -1,9 +1,10 @@
 import { NavLink } from 'react-router-dom'
-import { LayoutDashboard, GitBranch, ExternalLink } from 'lucide-react'
+import { LayoutDashboard, GitBranch, Mail, ExternalLink } from 'lucide-react'
 
 const navItems = [
   { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { to: '/stages', label: 'Stage Manager', icon: GitBranch },
+  { to: '/email-templates', label: 'Email Templates', icon: Mail },
 ]
 
 export function Sidebar() {

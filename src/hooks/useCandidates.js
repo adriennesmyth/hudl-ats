@@ -98,6 +98,22 @@ export function useCandidates() {
     return data
   }, [])
 
+  const uploadCv = useCallback(async (candidateId, cvFile) => {
+    const fileName = `${Date.now()}-${cvFile.name.replace(/\s+/g, '_')}`
+    const { error: uploadErr } = await supabase.storage
+      .from('cvs')
+      .upload(fileName, cvFile, { cacheControl: '3600', upsert: false })
+    if (uploadErr) throw uploadErr
+    const { data: urlData } = supabase.storage.from('cvs').getPublicUrl(fileName)
+    const cvUrl = urlData.publicUrl
+    const { error: updateErr } = await supabase
+      .from('candidates')
+      .update({ cv_url: cvUrl })
+      .eq('id', candidateId)
+    if (updateErr) throw updateErr
+    return cvUrl
+  }, [])
+
   const updateCandidateStage = useCallback(async (candidateId, stageId, movedBy = null) => {
     const { error: updateErr } = await supabase
       .from('candidates')
@@ -110,6 +126,12 @@ export function useCandidates() {
       stage_id: stageId,
       moved_by: movedBy,
     })
+
+    fetch('/api/send-stage-email', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ candidateId, stageId }),
+    }).catch(() => {})
   }, [])
 
   return {
@@ -119,6 +141,7 @@ export function useCandidates() {
     fetchCandidates,
     fetchCandidate,
     createCandidate,
+    uploadCv,
     updateCandidateStage,
   }
 }

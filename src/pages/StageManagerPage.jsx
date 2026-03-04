@@ -22,7 +22,7 @@ const PRESET_COLORS = [
   '#EF4444', '#FF6600',
 ]
 
-function StageFormFields({ register, errors, watchColor }) {
+function StageFormFields({ register, errors, watchColor, setValue }) {
   return (
     <div className="space-y-4">
       <Input
@@ -38,17 +38,17 @@ function StageFormFields({ register, errors, watchColor }) {
         </label>
         <div className="flex gap-2 flex-wrap mb-2">
           {PRESET_COLORS.map((c) => (
-            <label key={c} className="cursor-pointer">
-              <input type="radio" value={c} className="sr-only" {...register('color')} />
-              <span
-                className="w-7 h-7 rounded-full block border-2 transition-transform hover:scale-110"
-                style={{
-                  backgroundColor: c,
-                  borderColor: watchColor === c ? '#1A1A1A' : 'transparent',
-                  boxShadow: watchColor === c ? `0 0 0 2px white, 0 0 0 4px ${c}` : undefined,
-                }}
-              />
-            </label>
+            <button
+              key={c}
+              type="button"
+              onClick={() => setValue('color', c, { shouldValidate: true })}
+              className="w-7 h-7 rounded-full border-2 transition-transform hover:scale-110"
+              style={{
+                backgroundColor: c,
+                borderColor: watchColor === c ? '#1A1A1A' : 'transparent',
+                boxShadow: watchColor === c ? `0 0 0 2px white, 0 0 0 4px ${c}` : undefined,
+              }}
+            />
           ))}
         </div>
         <Input
@@ -183,6 +183,7 @@ export function StageManagerPage() {
                     register={editForm.register}
                     errors={editForm.formState.errors}
                     watchColor={editColor}
+                    setValue={editForm.setValue}
                   />
                   <div className="flex gap-2 mt-4">
                     <Button type="submit" size="sm" disabled={saving}>
@@ -288,6 +289,7 @@ export function StageManagerPage() {
             register={addForm.register}
             errors={addForm.formState.errors}
             watchColor={addColor}
+            setValue={addForm.setValue}
           />
           {error && (
             <p className="mt-3 text-sm text-red-500">{error}</p>

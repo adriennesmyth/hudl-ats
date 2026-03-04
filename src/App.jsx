@@ -5,6 +5,7 @@ import { ApplicationPage } from './pages/ApplicationPage'
 import { StageManagerPage } from './pages/StageManagerPage'
 import { CandidateProfilePage } from './pages/CandidateProfilePage'
 import { ScorecardPage } from './pages/ScorecardPage'
+import { EmailTemplatesPage } from './pages/EmailTemplatesPage'
 
 export default function App() {
   return (
@@ -43,6 +44,15 @@ export default function App() {
           element={
             <Layout>
               <ScorecardPage />
+            </Layout>
+          }
+        />
+
+        <Route
+          path="/email-templates"
+          element={
+            <Layout>
+              <EmailTemplatesPage />
             </Layout>
           }
         />
